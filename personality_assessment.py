@@ -11,11 +11,23 @@ from langchain.schema import Document
 from langchain_community.vectorstores import Chroma
 from langchain.prompts import ChatPromptTemplate
 from langchain.schema.output_parser import StrOutputParser
+from langchain.output_parsers import PydanticOutputParser
+from pydantic import BaseModel, Field
+from typing import List
 from langchain.schema.runnable import RunnablePassthrough
 from csv_reference_processor import CSVReferenceProcessor
 
 # Load environment variables
 load_dotenv()
+
+class AssessmentItem(BaseModel):
+    quality: str = Field(description="Name of the personality quality")
+    level: str = Field(description="Assessment level: LOW, MIDDLE, HIGH, or NOT OBSERVED")
+    reasoning: str = Field(description="Brief explanation for the assessment")
+
+class AssessmentResult(BaseModel):
+    assessments: List[AssessmentItem] = Field(description="List of personality assessments")
+    summary: str = Field(description="Overall assessment summary")
 
 class PersonalityAssessmentSystem:
     def __init__(self):
@@ -145,17 +157,61 @@ INSTRUCTIONS:
 2. Use the reference sheet and PDF definitions to understand each quality
 3. Be conservative - don't hallucinate traits without evidence
 4. Provide brief reasoning for each assessment
-5. Format output as JSON with structure:
+5. You MUST respond with ONLY valid JSON - no additional text before or after
+6. Use this EXACT JSON structure:
 {{
     "assessments": [
         {{
             "quality": "Quality Name",
-            "level": "LOW/MIDDLE/HIGH/NOT OBSERVED",
+            "level": "LOW",
             "reasoning": "Brief explanation based on observations"
+        }},
+        {{
+            "quality": "Quality Name", 
+            "level": "MIDDLE",
+            "reasoning": "Brief explanation based on observations"
+        }},
+        {{
+            "quality": "Quality Name",
+            "level": "HIGH", 
+            "reasoning": "Brief explanation based on observations"
+        }},
+        {{
+            "quality": "Quality Name",
+            "level": "NOT OBSERVED",
+            "reasoning": "No clear evidence observed"
         }}
     ],
     "summary": "Overall assessment summary"
 }}
+
+CRITICAL: Respond with ONLY the JSON object. Do not include any text before or after the JSON. Ensure all quotes are properly escaped and the JSON is valid."""
+
+        return ChatPromptTemplate.from_template(template)
+    
+    def create_assessment_prompt_with_parser(self, parser) -> ChatPromptTemplate:
+        """Create the prompt template with parser instructions"""
+        template = """You are an expert personality assessor for rural students. Your task is to evaluate a student's personality traits based on observer notes.
+
+CONTEXT INFORMATION:
+{context}
+
+STUDENT OBSERVATIONS:
+{observations}
+
+TASK: Analyze the student's behavior and assess their personality traits. For each of the 20 qualities, determine if the student shows evidence of that trait and rate them as LOW, MIDDLE, or HIGH. If there's insufficient evidence for a quality, mark it as "NOT OBSERVED".
+
+QUALITIES TO ASSESS:
+{qualities}
+
+INSTRUCTIONS:
+1. Only assess qualities where you have clear evidence from the observations
+2. Use the reference sheet and PDF definitions to understand each quality
+3. Be conservative - don't hallucinate traits without evidence
+4. Provide brief reasoning for each assessment
+5. Follow the exact format instructions below
+
+{format_instructions}
 
 Remember: Only assess qualities that are clearly demonstrated in the observations. If a quality is not shown, mark it as "NOT OBSERVED" rather than guessing."""
 
@@ -166,8 +222,11 @@ Remember: Only assess qualities that are clearly demonstrated in the observation
         if not self.vector_store:
             raise ValueError("Vector database not initialized. Call setup_vector_database() first.")
         
-        # Create the assessment chain
-        prompt = self.create_assessment_prompt()
+        # Create structured output parser
+        parser = PydanticOutputParser(pydantic_object=AssessmentResult)
+        
+        # Create the assessment prompt with parser instructions
+        prompt = self.create_assessment_prompt_with_parser(parser)
         
         # Retrieve relevant context
         try:
@@ -178,32 +237,77 @@ Remember: Only assess qualities that are clearly demonstrated in the observation
         
         retriever = self.vector_store.as_retriever(search_kwargs={"k": k_value})
         
-        # Create the assessment chain
+        # Create the assessment chain with structured output
         chain = (
-            {"context": retriever, "observations": RunnablePassthrough(), "qualities": lambda x: ", ".join(self.qualities)}
+            {"context": retriever, "observations": RunnablePassthrough(), "qualities": lambda x: ", ".join(self.qualities), "format_instructions": lambda x: parser.get_format_instructions()}
             | prompt
             | self.llm
-            | StrOutputParser()
+            | parser
         )
         
         try:
             # Get assessment
             result = chain.invoke(observations)
             
-            # Try to parse JSON response
+            # Convert Pydantic model to dict
+            return result.model_dump()
+                
+        except Exception as e:
+            # Fallback to string parsing if structured output fails
+            try:
+                fallback_result = self._fallback_assessment(observations, retriever)
+                return fallback_result
+            except Exception as fallback_error:
+                return {
+                    "error": f"Assessment failed: {str(e)}. Fallback also failed: {str(fallback_error)}",
+                    "observations": observations
+                }
+    
+    def _fallback_assessment(self, observations: str, retriever) -> Dict[str, Any]:
+        """Fallback assessment method using string parsing"""
+        try:
+            # Use the original prompt method
+            prompt = self.create_assessment_prompt()
+            
+            # Create simple chain
+            chain = (
+                {"context": retriever, "observations": RunnablePassthrough(), "qualities": lambda x: ", ".join(self.qualities)}
+                | prompt
+                | self.llm
+                | StrOutputParser()
+            )
+            
+            # Get assessment
+            result = chain.invoke(observations)
+            result = result.strip()
+            
+            # Try to parse JSON
             try:
                 parsed_result = json.loads(result)
                 return parsed_result
-            except json.JSONDecodeError:
-                # If JSON parsing fails, return the raw result
+            except json.JSONDecodeError as e:
+                # Try to extract JSON from the response
+                import re
+                json_match = re.search(r'\{.*\}', result, re.DOTALL)
+                if json_match:
+                    try:
+                        json_content = json_match.group(0)
+                        parsed_result = json.loads(json_content)
+                        return parsed_result
+                    except json.JSONDecodeError:
+                        pass
+                
+                # If all parsing attempts fail, return detailed error
                 return {
                     "raw_response": result,
-                    "error": "Could not parse JSON response"
+                    "error": f"Could not parse JSON response: {str(e)}",
+                    "response_length": len(result),
+                    "response_preview": result[:200] + "..." if len(result) > 200 else result
                 }
                 
         except Exception as e:
             return {
-                "error": f"Assessment failed: {str(e)}",
+                "error": f"Fallback assessment failed: {str(e)}",
                 "observations": observations
             }
     
