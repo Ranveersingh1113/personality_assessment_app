@@ -1,0 +1,245 @@
+{
+  "Adaptability": {
+    "LOW": [
+      "When asked to change seats, he was not ready at all.",
+      "Cant accept mistakes."
+    ],
+    "MIDDLE": [
+      "Try to follow instruction though did not like to be seperated by friends .",
+      "changed seats but with reluctance"
+    ],
+    "HIGH": [
+      "When asked to change seats, he was ready immediately",
+      "Follow throught he instructions without resistance."
+    ]
+  },
+  "Academic achievement": {
+    "LOW": [
+      "Can't write, can't read, can't understand what is said",
+      "Took a ong time in completing the task (submitted their work late)",
+      "couldn't spell their own name",
+      "Couldn’t understand the test even after explaining",
+      "Easily distracted.",
+      "Cnat do the basic maths."
+    ],
+    "MIDDLE": [
+      "Tried answering the question",
+      "attentive but hesistant while answering",
+      "Slow speed in reading and writing. But trying to improve constantly"
+    ],
+    "HIGH": [
+      "Presentation was well done, proper language was used",
+      "giving answers, remembering the previous level.",
+      "Very focused and efficient while solving tests.",
+      "Attention",
+      "was asking if have difficulty"
+    ]
+  },
+  "Boldness": {
+    "LOW": [
+      "Even if asked, doesn't answer.",
+      "Didn’t come forward to ask doubts instead asked friends.",
+      "When asked a question she startled and couldn’t answer."
+    ],
+    "MIDDLE": [
+      "Presented with confidence",
+      "hesitate to talk at first letter explained well",
+      "If  don't understand, raise  hand and ask questions"
+    ],
+    "HIGH": [
+      "The children left even though the session wasn't over when the bell rang.",
+      "They were playing with each other in class.",
+      "Fighting",
+      "Inattentive in the class",
+      "Had ideas but was discussing with others",
+      "Don’t hesitate to say anything that comes to there mind.",
+      "Keep suggesting things to others even when it was not asked.",
+      "Contatnt teasing , bullying others."
+    ]
+  },
+  "Competition": {
+    "LOW": [],
+    "MIDDLE": [],
+    "HIGH": [
+      "Asking how may questions have others solved.Trying to compete.",
+      "He was constatntly telling how much he has completed."
+    ]
+  },
+  "Creativity": {
+    "LOW": [],
+    "MIDDLE": [],
+    "HIGH": [
+      "Asking unique questions and coming up with ideas."
+    ]
+  },
+  "Enthusiasm": {
+    "LOW": [
+      "attentive but not participating",
+      "Eagerly waiting to go out. Asking when the session will end.",
+      "Casual Approach, No seriousness."
+    ],
+    "MIDDLE": [
+      "participated wholehartedly",
+      "Showed willingness to learn new skills",
+      "They answer in class but need encouagement."
+    ],
+    "HIGH": [
+      "Was taking a lot of leadership",
+      "Very enthusiastic",
+      "Was participating",
+      "Answering confidently",
+      "Very enthusiastic (understands everything but only gives answers sometimes)"
+    ]
+  },
+  "Excitability": {
+    "LOW": [
+      "There was no emotion on the face.",
+      "non responsive"
+    ],
+    "MIDDLE": [],
+    "HIGH": [
+      "Very distracted, not paying attention.",
+      "Responds quickly to anything that happens without thinking.",
+      "Continusly talking and fidgeting",
+      "He wanted to just give the test and leave."
+    ]
+  },
+  "General ability": {
+    "LOW": [
+      "had difficulty understanding simple instructions",
+      "Didn’t know basic details about himself like birth date, etc.",
+      "Irrelavant answers."
+    ],
+    "MIDDLE": [
+      "Understood the instructions properly.",
+      "Can read and write but mumbles a lot.",
+      "Pointed out the problems in the test."
+    ],
+    "HIGH": [
+      "ability to retain things taught and apply.",
+      "Remembers the small details and points out smallest changes."
+    ]
+  },
+  "guilt proneness": {
+    "LOW": [
+      "Don't feel ashamed doing anything.",
+      "Not afraid even when shouted at"
+    ],
+    "MIDDLE": [],
+    "HIGH": [
+      "Put head down when the question was about completing task"
+    ]
+  },
+  "individualism": {
+    "LOW": [],
+    "MIDDLE": [],
+    "HIGH": [
+      "Prefers to work alone"
+    ]
+  },
+  "leadership": {
+    "LOW": [],
+    "MIDDLE": [
+      "have ideas but do not express upfront"
+    ],
+    "HIGH": [
+      "coming forward and helping",
+      "took a lot of lead in answering",
+      "Answering on behalf of all calss"
+    ]
+  },
+  "maturity": {
+    "LOW": [
+      "No seriousness"
+    ],
+    "MIDDLE": [
+      "If someone teases me,  will beat him."
+    ],
+    "HIGH": []
+  },
+  "mental health": {
+    "LOW": [
+      "was engrossed in my own thoughts.",
+      "No eye contact"
+    ],
+    "MIDDLE": [],
+    "HIGH": [
+      "Showed resilinece and persistecne while solving the test and constantly tryong to improve."
+    ]
+  },
+  "morality": {
+    "LOW": [
+      "Did not accept their mistake for given excuses",
+      "they did not return promptly and stayed away too long.",
+      "Copying from others."
+    ],
+    "MIDDLE": [
+      "without disturbong the claas discuss with friends",
+      "After scolding went quite"
+    ],
+    "HIGH": [
+      "Honestly told that he cant read."
+    ]
+  },
+  "self control": {
+    "LOW": [
+      "Constantly disturbing the class",
+      "provided a reason to leave the classroom",
+      "Easily distracted.",
+      "Constantly chatting with each other",
+      "Can't follow the rules.",
+      "There was constant chatter , commotion"
+    ],
+    "MIDDLE": [
+      "Didn’t feel inferior when they were not able to understand."
+    ],
+    "HIGH": []
+  },
+  "sensitivity": {
+    "LOW": [],
+    "MIDDLE": [],
+    "HIGH": [
+      "hurts a lot.",
+      "Attention seeking . Asking unnecessary irrelevant questions"
+    ]
+  },
+  "self sufficiency": {
+    "LOW": [
+      "Overly dependant on friend",
+      "Constatnt assistance required."
+    ],
+    "MIDDLE": [
+      "Very well organised. Keeps things neat and clean"
+    ],
+    "HIGH": [
+      "explained personality very well and detailed",
+      "Very focused  on the task and asked for help when needed",
+      "No assistance was needed."
+    ]
+  },
+  "social warmth": {
+    "LOW": [
+      "Wasn't talking to anyone.",
+      "insensitive to others andpulling each other's leg",
+      "Not able to communicate properly with friends.",
+      "Keeps comlaining about the  friends."
+    ],
+    "MIDDLE": [
+      "Having discussion with friend",
+      "Does not mix up with classmates."
+    ],
+    "HIGH": [
+      "Helped a friend to understand.",
+      "Helps and coopearte with the facilitator."
+    ]
+  },
+  "tension": {
+    "LOW": [],
+    "MIDDLE": [
+      "Appeared in a distress."
+    ],
+    "HIGH": [
+      "Started crying when asked ifshe was ok."
+    ]
+  }
+}
