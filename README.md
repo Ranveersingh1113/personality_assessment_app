@@ -229,4 +229,4 @@ This project is designed for educational and NGO use. Please ensure compliance w
 
 ---
 
-**Built with ❤️ for rural education development**
+**Built with ❤️ for education development**
