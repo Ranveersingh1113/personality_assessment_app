@@ -1,0 +1,119 @@
+[
+  {
+    "student_id": "student_1",
+    "name": " Mangesh Pandurang Parit ",
+    "observations": "Carefully, independently solved the test.Didn't ask many questions.No help was needed.",
+    "assessment": {
+      "error": "Assessment failed after retries: Invalid argument provided to Gemini: 400 API key not valid. Please pass a valid API key. [reason: \"API_KEY_INVALID\"\ndomain: \"googleapis.com\"\nmetadata {\n  key: \"service\"\n  value: \"generativelanguage.googleapis.com\"\n}\n, locale: \"en-US\"\nmessage: \"API key not valid. Please pass a valid API key.\"\n]",
+      "observations": "Carefully, independently solved the test.Didn't ask many questions.No help was needed."
+    }
+  },
+  {
+    "student_id": "student_2",
+    "name": "Swaraj Umesh Chauhan",
+    "observations": "Was reading aloud.Solved the test carefully.No help was needed.No questions asked.",
+    "assessment": {
+      "error": "Assessment failed after retries: Invalid argument provided to Gemini: 400 API key not valid. Please pass a valid API key. [reason: \"API_KEY_INVALID\"\ndomain: \"googleapis.com\"\nmetadata {\n  key: \"service\"\n  value: \"generativelanguage.googleapis.com\"\n}\n, locale: \"en-US\"\nmessage: \"API key not valid. Please pass a valid API key.\"\n]",
+      "observations": "Was reading aloud.Solved the test carefully.No help was needed.No questions asked."
+    }
+  },
+  {
+    "student_id": "student_3",
+    "name": "Balaji Shivaji Palnate",
+    "observations": "Carefully solved the test.Didn't need much help.A lot about the little things particular\ne.g.-Time,What to Write, Where to Whrite",
+    "assessment": {
+      "error": "Assessment failed after retries: Invalid argument provided to Gemini: 400 API key not valid. Please pass a valid API key. [reason: \"API_KEY_INVALID\"\ndomain: \"googleapis.com\"\nmetadata {\n  key: \"service\"\n  value: \"generativelanguage.googleapis.com\"\n}\n, locale: \"en-US\"\nmessage: \"API key not valid. Please pass a valid API key.\"\n]",
+      "observations": "Carefully solved the test.Didn't need much help.A lot about the little things particular\ne.g.-Time,What to Write, Where to Whrite"
+    }
+  },
+  {
+    "student_id": "student_4",
+    "name": "Shlok Balaji Pethkar",
+    "observations": "Was reading aloud.Constant turmoil, no stability. Attempt to change the row.Submitted the test first.",
+    "assessment": {
+      "error": "Assessment failed after retries: Invalid argument provided to Gemini: 400 API key not valid. Please pass a valid API key. [reason: \"API_KEY_INVALID\"\ndomain: \"googleapis.com\"\nmetadata {\n  key: \"service\"\n  value: \"generativelanguage.googleapis.com\"\n}\n, locale: \"en-US\"\nmessage: \"API key not valid. Please pass a valid API key.\"\n]",
+      "observations": "Was reading aloud.Constant turmoil, no stability. Attempt to change the row.Submitted the test first."
+    }
+  },
+  {
+    "student_id": "student_5",
+    "name": "Shravni Maruti Honraw",
+    "observations": "Constantly talking to others. I was asking and writing answers.It became quiet when I had to change the place",
+    "assessment": {
+      "error": "Assessment failed after retries: Invalid argument provided to Gemini: 400 API key not valid. Please pass a valid API key. [reason: \"API_KEY_INVALID\"\ndomain: \"googleapis.com\"\nmetadata {\n  key: \"service\"\n  value: \"generativelanguage.googleapis.com\"\n}\n, locale: \"en-US\"\nmessage: \"API key not valid. Please pass a valid API key.\"\n]",
+      "observations": "Constantly talking to others. I was asking and writing answers.It became quiet when I had to change the place"
+    }
+  },
+  {
+    "student_id": "student_6",
+    "name": "Anvita Sandip Bawkar",
+    "observations": "I was reading it with a stutter.\nBut she was far ahead in solving the test.When asked, she said she had read and solved everything.",
+    "assessment": {
+      "error": "Assessment failed after retries: Invalid argument provided to Gemini: 400 API key not valid. Please pass a valid API key. [reason: \"API_KEY_INVALID\"\ndomain: \"googleapis.com\"\nmetadata {\n  key: \"service\"\n  value: \"generativelanguage.googleapis.com\"\n}\n, locale: \"en-US\"\nmessage: \"API key not valid. Please pass a valid API key.\"\n]",
+      "observations": "I was reading it with a stutter.\nBut she was far ahead in solving the test.When asked, she said she had read and solved everything."
+    }
+  },
+  {
+    "student_id": "student_7",
+    "name": "Sangharsh Jaypal Sonkamble",
+    "observations": "He was solving the test with concentration by reading it out loud.Asked what a fight is",
+    "assessment": {
+      "error": "Assessment failed after retries: Invalid argument provided to Gemini: 400 API key not valid. Please pass a valid API key. [reason: \"API_KEY_INVALID\"\ndomain: \"googleapis.com\"\nmetadata {\n  key: \"service\"\n  value: \"generativelanguage.googleapis.com\"\n}\n, locale: \"en-US\"\nmessage: \"API key not valid. Please pass a valid API key.\"\n]",
+      "observations": "He was solving the test with concentration by reading it out loud.Asked what a fight is"
+    }
+  },
+  {
+    "student_id": "student_8",
+    "name": "Samarth Anil Dhule",
+    "observations": "Samarth was solving Suraj's test.My 30th question was being asked.Constantly out of focus. Constantly chatters. Giving Instructions but not paying attention, not listenning",
+    "assessment": {
+      "error": "Assessment failed after retries: Invalid argument provided to Gemini: 400 API key not valid. Please pass a valid API key. [reason: \"API_KEY_INVALID\"\ndomain: \"googleapis.com\"\nmetadata {\n  key: \"service\"\n  value: \"generativelanguage.googleapis.com\"\n}\n, locale: \"en-US\"\nmessage: \"API key not valid. Please pass a valid API key.\"\n]",
+      "observations": "Samarth was solving Suraj's test.My 30th question was being asked.Constantly out of focus. Constantly chatters. Giving Instructions but not paying attention, not listenning"
+    }
+  },
+  {
+    "student_id": "student_9",
+    "name": "Aaryan Sunil Misal   ",
+    "observations": "Well solved the map test.",
+    "assessment": {
+      "error": "Assessment failed after retries: Invalid argument provided to Gemini: 400 API key not valid. Please pass a valid API key. [reason: \"API_KEY_INVALID\"\ndomain: \"googleapis.com\"\nmetadata {\n  key: \"service\"\n  value: \"generativelanguage.googleapis.com\"\n}\n, locale: \"en-US\"\nmessage: \"API key not valid. Please pass a valid API key.\"\n]",
+      "observations": "Well solved the map test."
+    }
+  },
+  {
+    "student_id": "student_10",
+    "name": "Nikhil Malhari Jambhure",
+    "observations": "While solving the test,\n I am solving the test calmly and thoughtfully.The question is, what does disagreement mean?",
+    "assessment": {
+      "error": "Assessment failed after retries: Invalid argument provided to Gemini: 400 API key not valid. Please pass a valid API key. [reason: \"API_KEY_INVALID\"\ndomain: \"googleapis.com\"\nmetadata {\n  key: \"service\"\n  value: \"generativelanguage.googleapis.com\"\n}\n, locale: \"en-US\"\nmessage: \"API key not valid. Please pass a valid API key.\"\n]",
+      "observations": "While solving the test,\n I am solving the test calmly and thoughtfully.The question is, what does disagreement mean?"
+    }
+  },
+  {
+    "student_id": "student_11",
+    "name": "Ganesh Lakshman Korlelu",
+    "observations": "Both Swaraj and Ganesh are discussing and solving the test.Ganesh is solving the test by looking at Balaji.",
+    "assessment": {
+      "error": "Assessment failed after retries: Invalid argument provided to Gemini: 400 API key not valid. Please pass a valid API key. [reason: \"API_KEY_INVALID\"\ndomain: \"googleapis.com\"\nmetadata {\n  key: \"service\"\n  value: \"generativelanguage.googleapis.com\"\n}\n, locale: \"en-US\"\nmessage: \"API key not valid. Please pass a valid API key.\"\n]",
+      "observations": "Both Swaraj and Ganesh are discussing and solving the test.Ganesh is solving the test by looking at Balaji."
+    }
+  },
+  {
+    "student_id": "student_12",
+    "name": "Aasawari Mahavir Mane ",
+    "observations": "Swara has run out of pen\n but is going to get it from Asawari.Swara always asks Asawari questions and\n Swara solves the test. \nIt seems that Asawari's nature is to help.",
+    "assessment": {
+      "error": "Assessment failed after retries: Invalid argument provided to Gemini: 400 API key not valid. Please pass a valid API key. [reason: \"API_KEY_INVALID\"\ndomain: \"googleapis.com\"\nmetadata {\n  key: \"service\"\n  value: \"generativelanguage.googleapis.com\"\n}\n, locale: \"en-US\"\nmessage: \"API key not valid. Please pass a valid API key.\"\n]",
+      "observations": "Swara has run out of pen\n but is going to get it from Asawari.Swara always asks Asawari questions and\n Swara solves the test. \nIt seems that Asawari's nature is to help."
+    }
+  },
+  {
+    "student_id": "student_13",
+    "name": "prachi Santosh Shelanke ",
+    "observations": "She was one of those students who are always\n first to point out, when teacher asks 'who did this'?Both of them particularly looked alarmed \nwhen one of their teachers decided to sit at the back..",
+    "assessment": {
+      "error": "Assessment failed after retries: Invalid argument provided to Gemini: 400 API key not valid. Please pass a valid API key. [reason: \"API_KEY_INVALID\"\ndomain: \"googleapis.com\"\nmetadata {\n  key: \"service\"\n  value: \"generativelanguage.googleapis.com\"\n}\n, locale: \"en-US\"\nmessage: \"API key not valid. Please pass a valid API key.\"\n]",
+      "observations": "She was one of those students who are always\n first to point out, when teacher asks 'who did this'?Both of them particularly looked alarmed \nwhen one of their teachers decided to sit at the back.."
+    }
+  }
+]

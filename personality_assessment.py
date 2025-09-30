@@ -1,21 +1,22 @@
 import os
 import json
+import time
 from typing import List, Dict, Any
 from dotenv import load_dotenv
 import PyPDF2
 import chromadb
-from langchain.text_splitter import RecursiveCharacterTextSplitter
+from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_community.embeddings import HuggingFaceEmbeddings
-from langchain.schema import Document
+from langchain_core.documents import Document
 from langchain_community.vectorstores import Chroma
-from langchain.prompts import ChatPromptTemplate
-from langchain.schema.output_parser import StrOutputParser
-from langchain.output_parsers import PydanticOutputParser
+from langchain_core.prompts import ChatPromptTemplate
+from langchain_core.output_parsers import StrOutputParser, PydanticOutputParser
 from pydantic import BaseModel, Field
 from typing import List
-from langchain.schema.runnable import RunnablePassthrough
+from langchain_core.runnables import RunnablePassthrough
 from csv_reference_processor import CSVReferenceProcessor
+from rate_limiter import get_rate_limiter, rate_limited_call
 
 # Load environment variables
 load_dotenv()
@@ -50,14 +51,31 @@ class PersonalityAssessmentSystem:
             model_name = GEMINI_MODEL
             temperature = GEMINI_TEMPERATURE
         except ImportError:
-            model_name = "gemini-1.5-pro"
+            model_name = "gemini-1.5-flash"
             temperature = 0.1
         
-        # Initialize Gemini LLM
+        # Initialize Gemini LLM with robust model fallback
+        api_key = os.getenv("GOOGLE_API_KEY")
+        # Prefer models present for your key (2.0/2.5 series), keep 1.5 as fallback
+        self.model_candidates = [
+            model_name,
+            "gemini-2.5-flash",
+            "gemini-2.0-flash",
+            "gemini-2.0-flash-001",
+            "gemini-flash-latest",
+            "gemini-2.5-pro",
+            "gemini-pro-latest",
+            "gemini-1.5-flash",
+            "gemini-1.5-pro"
+        ]
+        self.current_model_index = 0
         self.llm = ChatGoogleGenerativeAI(
-            model=model_name,
+            model=self.model_candidates[self.current_model_index],
             temperature=temperature,
-            google_api_key=os.getenv("GOOGLE_API_KEY")
+            google_api_key=api_key,
+            generation_config={
+                "response_mime_type": "application/json"
+            }
         )
         
         # Initialize Hugging Face embeddings
@@ -98,8 +116,11 @@ class PersonalityAssessmentSystem:
         """Set up the vector database with PDF content and reference sheet"""
         print("Setting up vector database...")
         
-        # Extract PDF content
-        pdf_content = self.extract_pdf_content("map-t.pdf")
+        # Extract PDF content (path relative to project root)
+        pdf_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "map-t.pdf")
+        if not os.path.exists(pdf_path):
+            pdf_path = "map-t.pdf"
+        pdf_content = self.extract_pdf_content(pdf_path)
         if not pdf_content:
             print("Warning: Could not extract PDF content")
             pdf_content = "PDF content unavailable"
@@ -217,10 +238,19 @@ Remember: Only assess qualities that are clearly demonstrated in the observation
 
         return ChatPromptTemplate.from_template(template)
     
+    @rate_limited_call
     def assess_student_personality(self, observations: str) -> Dict[str, Any]:
         """Assess a student's personality based on observations"""
         if not self.vector_store:
             raise ValueError("Vector database not initialized. Call setup_vector_database() first.")
+        
+        # Get rate limiter and retry settings
+        try:
+            from config import MAX_RETRIES, RETRY_DELAY, RETRY_ON_RATE_LIMIT
+        except ImportError:
+            MAX_RETRIES = 3
+            RETRY_DELAY = 30
+            RETRY_ON_RATE_LIMIT = True
         
         # Create structured output parser
         parser = PydanticOutputParser(pydantic_object=AssessmentResult)
@@ -245,24 +275,71 @@ Remember: Only assess qualities that are clearly demonstrated in the observation
             | parser
         )
         
-        try:
-            # Get assessment
-            result = chain.invoke(observations)
-            
-            # Convert Pydantic model to dict
-            return result.model_dump()
-                
-        except Exception as e:
-            # Fallback to string parsing if structured output fails
+        # Retry logic for rate limits
+        for attempt in range(MAX_RETRIES + 1):
             try:
-                fallback_result = self._fallback_assessment(observations, retriever)
-                return fallback_result
-            except Exception as fallback_error:
+                # Get assessment
+                result = chain.invoke(observations)
+                
+                # Convert Pydantic model to dict
+                return result.model_dump()
+                    
+            except Exception as e:
+                error_str = str(e)
+                
+                # Check if it's a rate limit error
+                if "429" in error_str and ("quota" in error_str.lower() or "rate" in error_str.lower()) and RETRY_ON_RATE_LIMIT:
+                    if attempt < MAX_RETRIES:
+                        print(f"Rate limit hit (attempt {attempt + 1}/{MAX_RETRIES + 1}). Waiting {RETRY_DELAY} seconds...")
+                        print(f"Error details: {error_str}")
+                        time.sleep(RETRY_DELAY)
+                        continue
+                    else:
+                        return {
+                            "error": f"Rate limit exceeded after {MAX_RETRIES + 1} attempts. Error: {error_str}",
+                            "observations": observations
+                        }
+                
+                # Attempt to switch model on NotFound errors or unsupported methods
+                if "NotFound" in error_str or "is not found" in error_str:
+                    if self.current_model_index < len(self.model_candidates) - 1:
+                        self.current_model_index += 1
+                        try:
+                            self.llm = ChatGoogleGenerativeAI(
+                                model=self.model_candidates[self.current_model_index],
+                                temperature=temperature,
+                                google_api_key=os.getenv("GOOGLE_API_KEY")
+                            )
+                            continue
+                        except Exception:
+                            pass
+                if "not supported for generateContent" in error_str.lower():
+                    if self.current_model_index < len(self.model_candidates) - 1:
+                        self.current_model_index += 1
+                        try:
+                            self.llm = ChatGoogleGenerativeAI(
+                                model=self.model_candidates[self.current_model_index],
+                                temperature=temperature,
+                                google_api_key=os.getenv("GOOGLE_API_KEY")
+                            )
+                            continue
+                        except Exception:
+                            pass
+                # For other errors, try fallback
+                try:
+                    fallback_result = self._fallback_assessment(observations, retriever)
+                    # Only accept fallback if it returns multiple assessments
+                    if fallback_result and len(fallback_result.get("assessments", [])) >= 2:
+                        return fallback_result
+                except Exception:
+                    pass
+                # As last resort, return a clear error instead of silent heuristic
                 return {
-                    "error": f"Assessment failed: {str(e)}. Fallback also failed: {str(fallback_error)}",
+                    "error": f"Assessment failed after retries: {error_str}",
                     "observations": observations
                 }
     
+    @rate_limited_call
     def _fallback_assessment(self, observations: str, retriever) -> Dict[str, Any]:
         """Fallback assessment method using string parsing"""
         try:
@@ -342,6 +419,43 @@ Remember: Only assess qualities that are clearly demonstrated in the observation
                 })
         
         return results
+
+    def _heuristic_assessment(self, observations: str) -> Dict[str, Any]:
+        """Produce a simple heuristic assessment when LLM is unavailable."""
+        text = (observations or "").lower()
+        keywords = {
+            "leadership": ["lead", "led", "organize", "captain"],
+            "creativity": ["creative", "idea", "innov", "design"],
+            "enthusiasm": ["enthusiastic", "eager", "excited", "active"],
+            "academic achievement": ["score", "grade", "rank", "marks"],
+            "self control": ["calm", "control", "discipline", "patient"],
+            "social warmth": ["friendly", "help", "support", "team"],
+            "boldness": ["confident", "bold", "speak up", "present"],
+            "sensitivity": ["sensitive", "empathy", "kind", "caring"],
+        }
+        assessments = []
+        for quality in self.qualities:
+            q_lower = quality.lower()
+            cues = keywords.get(q_lower, [])
+            score = sum(1 for k in cues if k in text)
+            if score >= 2:
+                level = "HIGH"
+            elif score == 1:
+                level = "MIDDLE"
+            else:
+                level = "NOT OBSERVED"
+            assessments.append({
+                "quality": quality,
+                "level": level,
+                "reasoning": "Heuristic fallback based on keyword presence"
+            })
+        summary = "Heuristic fallback assessment generated due to LLM unavailability."
+        # Filter to only observed qualities for downstream labeling utility
+        observed = [a for a in assessments if a["level"] != "NOT OBSERVED"]
+        return {
+            "assessments": observed,
+            "summary": summary
+        }
     
     def save_assessments(self, assessments: List[Dict[str, Any]], filename: str = "personality_assessments.json"):
         """Save assessment results to JSON file"""

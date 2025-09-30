@@ -1,0 +1,1432 @@
+[
+  {
+    "student_id": "student_1",
+    "name": " Mangesh Pandurang Parit ",
+    "observations": "Carefully, independently solved the test.Didn't ask many questions.No help was needed.",
+    "assessment": {
+      "assessments": [
+        {
+          "quality": "Academic achievement",
+          "level": "HIGH",
+          "reasoning": "The student independently solved the test carefully, indicating a high level of academic achievement."
+        },
+        {
+          "quality": "Boldness",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no evidence to suggest the student is bold or not bold."
+        },
+        {
+          "quality": "Self sufficiency",
+          "level": "HIGH",
+          "reasoning": "The student solved the test independently and didn't need help, showing high self-sufficiency."
+        },
+        {
+          "quality": "Adaptability",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no information about the student's adaptability."
+        },
+        {
+          "quality": "Competition",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no information about the student's competitiveness."
+        },
+        {
+          "quality": "Creativity",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no information about the student's creativity."
+        },
+        {
+          "quality": "Enthusiasm",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no information about the student's enthusiasm."
+        },
+        {
+          "quality": "Excitability",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no information about the student's excitability."
+        },
+        {
+          "quality": "General ability",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no information about the student's general ability."
+        },
+        {
+          "quality": "Guilt proneness",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no information about the student's guilt proneness."
+        },
+        {
+          "quality": "Individualism",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no information about the student's individualism."
+        },
+        {
+          "quality": "Innovation",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no information about the student's innovation."
+        },
+        {
+          "quality": "Leadership",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no information about the student's leadership."
+        },
+        {
+          "quality": "Maturity",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no information about the student's maturity."
+        },
+        {
+          "quality": "Mental health",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no information about the student's mental health."
+        },
+        {
+          "quality": "Morality",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no information about the student's morality."
+        },
+        {
+          "quality": "Self control",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no information about the student's self control."
+        },
+        {
+          "quality": "Sensitivity",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no information about the student's sensitivity."
+        },
+        {
+          "quality": "Social warmth",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no information about the student's social warmth."
+        },
+        {
+          "quality": "Tension",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no information about the student's tension."
+        }
+      ],
+      "summary": "Based on the observations, the student demonstrates high academic achievement and self-sufficiency. There is insufficient evidence to assess the remaining qualities."
+    }
+  },
+  {
+    "student_id": "student_2",
+    "name": "Swaraj Umesh Chauhan",
+    "observations": "Was reading aloud.Solved the test carefully.No help was needed.No questions asked.",
+    "assessment": {
+      "assessments": [
+        {
+          "quality": "Academic achievement",
+          "level": "MIDDLE",
+          "reasoning": "The student solved the test carefully, suggesting a level of academic engagement and ability above 'low' but without evidence of 'high' achievement like excellent presentation or remembering previous levels."
+        },
+        {
+          "quality": "General ability",
+          "level": "MIDDLE",
+          "reasoning": "The student solved the test and needed no help, indicating they understood the instructions and possessed a basic level of general ability. This aligns with the 'middle' level description of understanding instructions properly."
+        },
+        {
+          "quality": "Self sufficiency",
+          "level": "HIGH",
+          "reasoning": "The student solved the test carefully and needed no help, indicating a high level of self-sufficiency."
+        },
+        {
+          "quality": "Adaptability",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no information about the student's adaptability in the provided observations."
+        },
+        {
+          "quality": "Boldness",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no information about the student's boldness in the provided observations."
+        },
+        {
+          "quality": "Competition",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no information about the student's competitiveness in the provided observations."
+        },
+        {
+          "quality": "Creativity",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no information about the student's creativity in the provided observations."
+        },
+        {
+          "quality": "Enthusiasm",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no information about the student's enthusiasm in the provided observations."
+        },
+        {
+          "quality": "Excitability",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no information about the student's excitability in the provided observations."
+        },
+        {
+          "quality": "Guilt proneness",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no information about the student's guilt proneness in the provided observations."
+        },
+        {
+          "quality": "Individualism",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no information about the student's individualism in the provided observations."
+        },
+        {
+          "quality": "Innovation",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no information about the student's innovation in the provided observations."
+        },
+        {
+          "quality": "Leadership",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no information about the student's leadership in the provided observations."
+        },
+        {
+          "quality": "Maturity",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no information about the student's maturity in the provided observations."
+        },
+        {
+          "quality": "Mental health",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no information about the student's mental health in the provided observations."
+        },
+        {
+          "quality": "Morality",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no information about the student's morality in the provided observations."
+        },
+        {
+          "quality": "Self control",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no information about the student's self control in the provided observations."
+        },
+        {
+          "quality": "Sensitivity",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no information about the student's sensitivity in the provided observations."
+        },
+        {
+          "quality": "Social warmth",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no information about the student's social warmth in the provided observations."
+        },
+        {
+          "quality": "Tension",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no information about the student's tension in the provided observations."
+        }
+      ],
+      "summary": "Based on the limited observations, the student demonstrates middle-level academic achievement and general ability. They also show a high degree of self-sufficiency. There is insufficient evidence to assess the remaining qualities."
+    }
+  },
+  {
+    "student_id": "student_3",
+    "name": "Balaji Shivaji Palnate",
+    "observations": "Carefully solved the test.Didn't need much help.A lot about the little things particular\ne.g.-Time,What to Write, Where to Whrite",
+    "assessment": {
+      "assessments": [
+        {
+          "quality": "Academic achievement",
+          "level": "MIDDLE",
+          "reasoning": "The student 'Carefully solved the test' and 'Didn't need much help' suggests a middle level of academic achievement. They were able to complete the task with some level of competence."
+        },
+        {
+          "quality": "General ability",
+          "level": "MIDDLE",
+          "reasoning": "The student 'Didn't need much help' suggests they understood the instructions and questions adequately, indicating a middle level of general ability."
+        },
+        {
+          "quality": "Self sufficiency",
+          "level": "MIDDLE",
+          "reasoning": "The student 'Didn't need much help' suggests a degree of self-sufficiency, placing them in the middle range."
+        },
+        {
+          "quality": "Adaptability",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no information about the student's ability to adapt to new situations or changes."
+        },
+        {
+          "quality": "Boldness",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no information about the student's boldness or willingness to take risks."
+        },
+        {
+          "quality": "Competition",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no information about the student's competitiveness."
+        },
+        {
+          "quality": "Creativity",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no information about the student's creativity."
+        },
+        {
+          "quality": "Enthusiasm",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no information about the student's enthusiasm."
+        },
+        {
+          "quality": "Excitability",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no information about the student's excitability."
+        },
+        {
+          "quality": "Guilt proneness",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no information about the student's guilt proneness."
+        },
+        {
+          "quality": "Individualism",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no information about the student's preference for working alone or in groups."
+        },
+        {
+          "quality": "Innovation",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no information about the student's innovativeness."
+        },
+        {
+          "quality": "Leadership",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no information about the student's leadership abilities."
+        },
+        {
+          "quality": "Maturity",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no information about the student's maturity level."
+        },
+        {
+          "quality": "Mental health",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no information about the student's mental health."
+        },
+        {
+          "quality": "Morality",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no information about the student's morality."
+        },
+        {
+          "quality": "Self control",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no information about the student's self-control."
+        },
+        {
+          "quality": "Sensitivity",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no information about the student's sensitivity."
+        },
+        {
+          "quality": "Social warmth",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no information about the student's social warmth."
+        },
+        {
+          "quality": "Tension",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no information about the student's tension levels."
+        }
+      ],
+      "summary": "Based on the limited observations, the student demonstrates a middle level of academic achievement, general ability, and self-sufficiency. Other personality qualities could not be assessed due to insufficient evidence."
+    }
+  },
+  {
+    "student_id": "student_4",
+    "name": "Shlok Balaji Pethkar",
+    "observations": "Was reading aloud.Constant turmoil, no stability. Attempt to change the row.Submitted the test first.",
+    "assessment": {
+      "assessments": [
+        {
+          "quality": "Adaptability",
+          "level": "LOW",
+          "reasoning": "The student attempted to change rows, indicating a difficulty in adapting to the current situation."
+        },
+        {
+          "quality": "Academic achievement",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no direct evidence about academic achievement."
+        },
+        {
+          "quality": "Boldness",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no direct evidence about boldness."
+        },
+        {
+          "quality": "Competition",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no direct evidence about competition."
+        },
+        {
+          "quality": "Creativity",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no direct evidence about creativity."
+        },
+        {
+          "quality": "Enthusiasm",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no direct evidence about enthusiasm."
+        },
+        {
+          "quality": "Excitability",
+          "level": "HIGH",
+          "reasoning": "The student displayed 'constant turmoil, no stability,' suggesting high excitability."
+        },
+        {
+          "quality": "General ability",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no direct evidence about general ability."
+        },
+        {
+          "quality": "Guilt proneness",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no direct evidence about guilt proneness."
+        },
+        {
+          "quality": "Individualism",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no direct evidence about individualism."
+        },
+        {
+          "quality": "Innovation",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no direct evidence about innovation."
+        },
+        {
+          "quality": "Leadership",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no direct evidence about leadership."
+        },
+        {
+          "quality": "Maturity",
+          "level": "LOW",
+          "reasoning": "The 'constant turmoil, no stability' suggests a lack of maturity."
+        },
+        {
+          "quality": "Mental health",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no direct evidence about mental health."
+        },
+        {
+          "quality": "Morality",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no direct evidence about morality."
+        },
+        {
+          "quality": "Self control",
+          "level": "LOW",
+          "reasoning": "The 'constant turmoil, no stability' suggests a lack of self-control."
+        },
+        {
+          "quality": "Sensitivity",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no direct evidence about sensitivity."
+        },
+        {
+          "quality": "Self sufficiency",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no direct evidence about self sufficiency."
+        },
+        {
+          "quality": "Social warmth",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no direct evidence about social warmth."
+        },
+        {
+          "quality": "Tension",
+          "level": "HIGH",
+          "reasoning": "The 'constant turmoil, no stability' suggests high tension. Submitting the test first could also indicate a desire to quickly resolve the stressful situation."
+        }
+      ],
+      "summary": "Based on the limited observations, the student demonstrates low adaptability and maturity, high excitability and tension, and a lack of self-control. Other personality qualities could not be reliably assessed due to insufficient evidence."
+    }
+  },
+  {
+    "student_id": "student_5",
+    "name": "Shravni Maruti Honraw",
+    "observations": "Constantly talking to others. I was asking and writing answers.It became quiet when I had to change the place",
+    "assessment": {
+      "assessments": [
+        {
+          "quality": "Adaptability",
+          "level": "MIDDLE",
+          "reasoning": "Became quiet when asked to change the place, suggesting reluctance but eventual compliance."
+        },
+        {
+          "quality": "Academic achievement",
+          "level": "MIDDLE",
+          "reasoning": "The student was asking and writing answers, indicating some level of academic engagement."
+        },
+        {
+          "quality": "Boldness",
+          "level": "NOT OBSERVED",
+          "reasoning": "No direct evidence of boldness is present in the provided observations."
+        },
+        {
+          "quality": "Competition",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no evidence of competitive behavior in the provided observations."
+        },
+        {
+          "quality": "Creativity",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no evidence of creative behavior in the provided observations."
+        },
+        {
+          "quality": "Enthusiasm",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no evidence of enthusiasm in the provided observations."
+        },
+        {
+          "quality": "Excitability",
+          "level": "HIGH",
+          "reasoning": "The student was constantly talking to others, indicating a high level of excitability."
+        },
+        {
+          "quality": "General ability",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no evidence to assess the student's general ability."
+        },
+        {
+          "quality": "Guilt proneness",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no evidence of guilt proneness in the provided observations."
+        },
+        {
+          "quality": "Individualism",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no evidence of individualism in the provided observations."
+        },
+        {
+          "quality": "Innovation",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no evidence of innovative behavior in the provided observations."
+        },
+        {
+          "quality": "Leadership",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no evidence of leadership qualities in the provided observations."
+        },
+        {
+          "quality": "Maturity",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no clear evidence to assess maturity."
+        },
+        {
+          "quality": "Mental health",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no evidence to assess the student's mental health."
+        },
+        {
+          "quality": "Morality",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no evidence to assess the student's morality."
+        },
+        {
+          "quality": "Self control",
+          "level": "LOW",
+          "reasoning": "Constantly talking to others suggests low self-control."
+        },
+        {
+          "quality": "Sensitivity",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no evidence of sensitivity in the provided observations."
+        },
+        {
+          "quality": "Self sufficiency",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no evidence of self-sufficiency in the provided observations."
+        },
+        {
+          "quality": "Social warmth",
+          "level": "NOT OBSERVED",
+          "reasoning": "While the student was talking to others, it's not clear if this indicates social warmth or simply distractibility."
+        },
+        {
+          "quality": "Tension",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no evidence of tension in the provided observations."
+        }
+      ],
+      "summary": "Based on the limited observations, the student demonstrates middle adaptability and academic achievement, high excitability, and low self-control. Other personality qualities could not be reliably assessed due to lack of evidence."
+    }
+  },
+  {
+    "student_id": "student_6",
+    "name": "Anvita Sandip Bawkar",
+    "observations": "I was reading it with a stutter.\nBut she was far ahead in solving the test.When asked, she said she had read and solved everything.",
+    "assessment": {
+      "assessments": [
+        {
+          "quality": "Academic achievement",
+          "level": "HIGH",
+          "reasoning": "The student was far ahead in solving the test, indicating high academic achievement."
+        },
+        {
+          "quality": "Tension",
+          "level": "MIDDLE",
+          "reasoning": "The student was reading with a stutter, which could indicate some level of tension or anxiety."
+        },
+        {
+          "quality": "General ability",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no direct evidence to assess general ability."
+        },
+        {
+          "quality": "Adaptability",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no direct evidence to assess adaptability."
+        },
+        {
+          "quality": "Boldness",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no direct evidence to assess boldness."
+        },
+        {
+          "quality": "Competition",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no direct evidence to assess competition."
+        },
+        {
+          "quality": "Creativity",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no direct evidence to assess creativity."
+        },
+        {
+          "quality": "Enthusiasm",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no direct evidence to assess enthusiasm."
+        },
+        {
+          "quality": "Excitability",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no direct evidence to assess excitability."
+        },
+        {
+          "quality": "Guilt proneness",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no direct evidence to assess guilt proneness."
+        },
+        {
+          "quality": "Individualism",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no direct evidence to assess individualism."
+        },
+        {
+          "quality": "Innovation",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no direct evidence to assess innovation."
+        },
+        {
+          "quality": "Leadership",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no direct evidence to assess leadership."
+        },
+        {
+          "quality": "Maturity",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no direct evidence to assess maturity."
+        },
+        {
+          "quality": "Mental health",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no direct evidence to assess mental health."
+        },
+        {
+          "quality": "Morality",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no direct evidence to assess morality."
+        },
+        {
+          "quality": "Self control",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no direct evidence to assess self control."
+        },
+        {
+          "quality": "Sensitivity",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no direct evidence to assess sensitivity."
+        },
+        {
+          "quality": "Self sufficiency",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no direct evidence to assess self sufficiency."
+        },
+        {
+          "quality": "Social warmth",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no direct evidence to assess social warmth."
+        }
+      ],
+      "summary": "Based on the limited observations, the student demonstrates high academic achievement and possibly some tension or anxiety indicated by the stutter. Other personality qualities could not be reliably assessed due to lack of evidence."
+    }
+  },
+  {
+    "student_id": "student_7",
+    "name": "Sangharsh Jaypal Sonkamble",
+    "observations": "He was solving the test with concentration by reading it out loud.Asked what a fight is",
+    "assessment": {
+      "assessments": [
+        {
+          "quality": "Adaptability",
+          "level": "NOT OBSERVED",
+          "reasoning": "No information about adaptability is provided in the observation."
+        },
+        {
+          "quality": "Academic achievement",
+          "level": "MIDDLE",
+          "reasoning": "Solving the test indicates some level of academic engagement, but reading aloud suggests a possible need for auditory reinforcement or a slower pace."
+        },
+        {
+          "quality": "Boldness",
+          "level": "NOT OBSERVED",
+          "reasoning": "No information about boldness is provided in the observation."
+        },
+        {
+          "quality": "Competition",
+          "level": "NOT OBSERVED",
+          "reasoning": "No information about competition is provided in the observation."
+        },
+        {
+          "quality": "Creativity",
+          "level": "NOT OBSERVED",
+          "reasoning": "No information about creativity is provided in the observation."
+        },
+        {
+          "quality": "Enthusiasm",
+          "level": "NOT OBSERVED",
+          "reasoning": "No information about enthusiasm is provided in the observation."
+        },
+        {
+          "quality": "Excitability",
+          "level": "NOT OBSERVED",
+          "reasoning": "No information about excitability is provided in the observation."
+        },
+        {
+          "quality": "General ability",
+          "level": "NOT OBSERVED",
+          "reasoning": "Asking what a fight is could indicate a gap in understanding, but it's not definitive without more context."
+        },
+        {
+          "quality": "Guilt proneness",
+          "level": "NOT OBSERVED",
+          "reasoning": "No information about guilt proneness is provided in the observation."
+        },
+        {
+          "quality": "Individualism",
+          "level": "NOT OBSERVED",
+          "reasoning": "No information about individualism is provided in the observation."
+        },
+        {
+          "quality": "Innovation",
+          "level": "NOT OBSERVED",
+          "reasoning": "No information about innovation is provided in the observation."
+        },
+        {
+          "quality": "Leadership",
+          "level": "NOT OBSERVED",
+          "reasoning": "No information about leadership is provided in the observation."
+        },
+        {
+          "quality": "Maturity",
+          "level": "LOW",
+          "reasoning": "Asking 'what a fight is' suggests a lack of understanding of a common concept, indicating lower maturity."
+        },
+        {
+          "quality": "Mental health",
+          "level": "NOT OBSERVED",
+          "reasoning": "No information about mental health is provided in the observation."
+        },
+        {
+          "quality": "Morality",
+          "level": "NOT OBSERVED",
+          "reasoning": "No information about morality is provided in the observation."
+        },
+        {
+          "quality": "Self control",
+          "level": "NOT OBSERVED",
+          "reasoning": "No information about self control is provided in the observation."
+        },
+        {
+          "quality": "Sensitivity",
+          "level": "NOT OBSERVED",
+          "reasoning": "No information about sensitivity is provided in the observation."
+        },
+        {
+          "quality": "Self sufficiency",
+          "level": "NOT OBSERVED",
+          "reasoning": "No information about self sufficiency is provided in the observation."
+        },
+        {
+          "quality": "Social warmth",
+          "level": "NOT OBSERVED",
+          "reasoning": "No information about social warmth is provided in the observation."
+        },
+        {
+          "quality": "Tension",
+          "level": "NOT OBSERVED",
+          "reasoning": "No information about tension is provided in the observation."
+        }
+      ],
+      "summary": "Based on the limited observations, the student demonstrates middle academic achievement and low maturity. Other personality qualities could not be reliably assessed due to insufficient evidence."
+    }
+  },
+  {
+    "student_id": "student_8",
+    "name": "Samarth Anil Dhule",
+    "observations": "Samarth was solving Suraj's test.My 30th question was being asked.Constantly out of focus. Constantly chatters. Giving Instructions but not paying attention, not listenning",
+    "assessment": {
+      "assessments": [
+        {
+          "quality": "Academic achievement",
+          "level": "LOW",
+          "reasoning": "Solving someone else's test and being out of focus suggests a lack of focus on his own academic tasks."
+        },
+        {
+          "quality": "Excitability",
+          "level": "HIGH",
+          "reasoning": "The student is constantly out of focus and chatters constantly, indicating high excitability and distractibility."
+        },
+        {
+          "quality": "Self control",
+          "level": "LOW",
+          "reasoning": "Constantly chatters and not paying attention to instructions indicates a lack of self-control."
+        },
+        {
+          "quality": "Adaptability",
+          "level": "NOT OBSERVED",
+          "reasoning": "No evidence of adaptability is present in the observations."
+        },
+        {
+          "quality": "Boldness",
+          "level": "NOT OBSERVED",
+          "reasoning": "No evidence of boldness is present in the observations."
+        },
+        {
+          "quality": "Competition",
+          "level": "NOT OBSERVED",
+          "reasoning": "No evidence of competition is present in the observations."
+        },
+        {
+          "quality": "Creativity",
+          "level": "NOT OBSERVED",
+          "reasoning": "No evidence of creativity is present in the observations."
+        },
+        {
+          "quality": "Enthusiasm",
+          "level": "LOW",
+          "reasoning": "Not paying attention suggests a lack of enthusiasm."
+        },
+        {
+          "quality": "General ability",
+          "level": "NOT OBSERVED",
+          "reasoning": "No evidence of general ability is present in the observations."
+        },
+        {
+          "quality": "Guilt proneness",
+          "level": "NOT OBSERVED",
+          "reasoning": "No evidence of guilt proneness is present in the observations."
+        },
+        {
+          "quality": "Individualism",
+          "level": "NOT OBSERVED",
+          "reasoning": "No evidence of individualism is present in the observations."
+        },
+        {
+          "quality": "Innovation",
+          "level": "NOT OBSERVED",
+          "reasoning": "No evidence of innovation is present in the observations."
+        },
+        {
+          "quality": "Leadership",
+          "level": "NOT OBSERVED",
+          "reasoning": "No evidence of leadership is present in the observations."
+        },
+        {
+          "quality": "Maturity",
+          "level": "LOW",
+          "reasoning": "Chattering and not paying attention to instructions suggests a lack of maturity."
+        },
+        {
+          "quality": "Mental health",
+          "level": "NOT OBSERVED",
+          "reasoning": "No evidence of mental health is present in the observations."
+        },
+        {
+          "quality": "Morality",
+          "level": "NOT OBSERVED",
+          "reasoning": "While solving someone else's test might suggest a morality issue, it's not definitive without more context."
+        },
+        {
+          "quality": "Sensitivity",
+          "level": "NOT OBSERVED",
+          "reasoning": "No evidence of sensitivity is present in the observations."
+        },
+        {
+          "quality": "Self sufficiency",
+          "level": "NOT OBSERVED",
+          "reasoning": "No evidence of self-sufficiency is present in the observations."
+        },
+        {
+          "quality": "Social warmth",
+          "level": "NOT OBSERVED",
+          "reasoning": "While chattering might suggest social interaction, it doesn't necessarily indicate social warmth."
+        },
+        {
+          "quality": "Tension",
+          "level": "NOT OBSERVED",
+          "reasoning": "No evidence of tension is present in the observations."
+        }
+      ],
+      "summary": "Samarth demonstrates low academic achievement, high excitability, and low self-control. He also shows a lack of maturity and enthusiasm. Other qualities could not be assessed due to insufficient evidence."
+    }
+  },
+  {
+    "student_id": "student_9",
+    "name": "Aaryan Sunil Misal   ",
+    "observations": "Well solved the map test.",
+    "assessment": {
+      "assessments": [
+        {
+          "quality": "General ability",
+          "level": "MIDDLE",
+          "reasoning": "The student 'Well solved the map test' suggests a reasonable level of cognitive function and problem-solving skills."
+        },
+        {
+          "quality": "Academic achievement",
+          "level": "MIDDLE",
+          "reasoning": "Solving the map test well implies a certain level of academic competence."
+        },
+        {
+          "quality": "Adaptability",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no information to assess the student's adaptability."
+        },
+        {
+          "quality": "Boldness",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no information to assess the student's boldness."
+        },
+        {
+          "quality": "Competition",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no information to assess the student's competitiveness."
+        },
+        {
+          "quality": "Creativity",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no information to assess the student's creativity."
+        },
+        {
+          "quality": "Enthusiasm",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no information to assess the student's enthusiasm."
+        },
+        {
+          "quality": "Excitability",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no information to assess the student's excitability."
+        },
+        {
+          "quality": "Guilt proneness",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no information to assess the student's guilt proneness."
+        },
+        {
+          "quality": "Individualism",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no information to assess the student's individualism."
+        },
+        {
+          "quality": "Innovation",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no information to assess the student's innovation."
+        },
+        {
+          "quality": "Leadership",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no information to assess the student's leadership."
+        },
+        {
+          "quality": "Maturity",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no information to assess the student's maturity."
+        },
+        {
+          "quality": "Mental health",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no information to assess the student's mental health."
+        },
+        {
+          "quality": "Morality",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no information to assess the student's morality."
+        },
+        {
+          "quality": "Self control",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no information to assess the student's self control."
+        },
+        {
+          "quality": "Sensitivity",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no information to assess the student's sensitivity."
+        },
+        {
+          "quality": "Self sufficiency",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no information to assess the student's self sufficiency."
+        },
+        {
+          "quality": "Social warmth",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no information to assess the student's social warmth."
+        },
+        {
+          "quality": "Tension",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no information to assess the student's tension."
+        }
+      ],
+      "summary": "Based on the limited observation that the student 'Well solved the map test', a preliminary assessment suggests a middle level of general ability and academic achievement. All other qualities are not observed due to lack of evidence."
+    }
+  },
+  {
+    "student_id": "student_10",
+    "name": "Nikhil Malhari Jambhure",
+    "observations": "While solving the test,\n I am solving the test calmly and thoughtfully.The question is, what does disagreement mean?",
+    "assessment": {
+      "assessments": [
+        {
+          "quality": "Academic achievement",
+          "level": "MIDDLE",
+          "reasoning": "The student is trying to understand the meaning of a word, indicating an attempt to engage with the test material."
+        },
+        {
+          "quality": "General ability",
+          "level": "MIDDLE",
+          "reasoning": "The student is able to engage with the test and is trying to understand the meaning of a word, which indicates that they understood the instructions properly."
+        },
+        {
+          "quality": "Self control",
+          "level": "MIDDLE",
+          "reasoning": "The student is solving the test calmly and thoughtfully."
+        },
+        {
+          "quality": "Adaptability",
+          "level": "NOT OBSERVED",
+          "reasoning": "No evidence of adaptability."
+        },
+        {
+          "quality": "Boldness",
+          "level": "NOT OBSERVED",
+          "reasoning": "No evidence of boldness."
+        },
+        {
+          "quality": "Competition",
+          "level": "NOT OBSERVED",
+          "reasoning": "No evidence of competition."
+        },
+        {
+          "quality": "Creativity",
+          "level": "NOT OBSERVED",
+          "reasoning": "No evidence of creativity."
+        },
+        {
+          "quality": "Enthusiasm",
+          "level": "NOT OBSERVED",
+          "reasoning": "No evidence of enthusiasm."
+        },
+        {
+          "quality": "Excitability",
+          "level": "NOT OBSERVED",
+          "reasoning": "No evidence of excitability."
+        },
+        {
+          "quality": "Guilt proneness",
+          "level": "NOT OBSERVED",
+          "reasoning": "No evidence of guilt proneness."
+        },
+        {
+          "quality": "Individualism",
+          "level": "NOT OBSERVED",
+          "reasoning": "No evidence of individualism."
+        },
+        {
+          "quality": "Innovation",
+          "level": "NOT OBSERVED",
+          "reasoning": "No evidence of innovation."
+        },
+        {
+          "quality": "Leadership",
+          "level": "NOT OBSERVED",
+          "reasoning": "No evidence of leadership."
+        },
+        {
+          "quality": "Maturity",
+          "level": "NOT OBSERVED",
+          "reasoning": "No evidence of maturity."
+        },
+        {
+          "quality": "Mental health",
+          "level": "NOT OBSERVED",
+          "reasoning": "No evidence of mental health."
+        },
+        {
+          "quality": "Morality",
+          "level": "NOT OBSERVED",
+          "reasoning": "No evidence of morality."
+        },
+        {
+          "quality": "Sensitivity",
+          "level": "NOT OBSERVED",
+          "reasoning": "No evidence of sensitivity."
+        },
+        {
+          "quality": "Self sufficiency",
+          "level": "NOT OBSERVED",
+          "reasoning": "No evidence of self sufficiency."
+        },
+        {
+          "quality": "Social warmth",
+          "level": "NOT OBSERVED",
+          "reasoning": "No evidence of social warmth."
+        },
+        {
+          "quality": "Tension",
+          "level": "NOT OBSERVED",
+          "reasoning": "No evidence of tension."
+        }
+      ],
+      "summary": "The student demonstrates a calm and thoughtful approach to the test, indicating a degree of self-control. They are actively trying to understand the test material, suggesting average academic ability and general understanding."
+    }
+  },
+  {
+    "student_id": "student_11",
+    "name": "Ganesh Lakshman Korlelu",
+    "observations": "Both Swaraj and Ganesh are discussing and solving the test.Ganesh is solving the test by looking at Balaji.",
+    "assessment": {
+      "assessments": [
+        {
+          "quality": "Competition",
+          "level": "MIDDLE",
+          "reasoning": "Ganesh is looking at Balaji's answers, suggesting a desire to perform well, but not necessarily in a purely independent way. This indicates a moderate level of competitiveness."
+        },
+        {
+          "quality": "Morality",
+          "level": "LOW",
+          "reasoning": "Ganesh is solving the test by looking at Balaji, which indicates a lack of honesty and integrity."
+        },
+        {
+          "quality": "Guilt proneness",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no information to assess guilt proneness."
+        },
+        {
+          "quality": "Adaptability",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no information to assess adaptability."
+        },
+        {
+          "quality": "Academic achievement",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no information to assess academic achievement."
+        },
+        {
+          "quality": "Boldness",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no information to assess boldness."
+        },
+        {
+          "quality": "Creativity",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no information to assess creativity."
+        },
+        {
+          "quality": "Enthusiasm",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no information to assess enthusiasm."
+        },
+        {
+          "quality": "Excitability",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no information to assess excitability."
+        },
+        {
+          "quality": "General ability",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no information to assess general ability."
+        },
+        {
+          "quality": "Individualism",
+          "level": "LOW",
+          "reasoning": "Ganesh's reliance on Balaji's answers suggests a lower level of individualism, as he is not solving the test independently."
+        },
+        {
+          "quality": "Innovation",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no information to assess innovation."
+        },
+        {
+          "quality": "Leadership",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no information to assess leadership."
+        },
+        {
+          "quality": "Maturity",
+          "level": "LOW",
+          "reasoning": "Ganesh's behavior of copying answers suggests a lack of maturity."
+        },
+        {
+          "quality": "Mental health",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no information to assess mental health."
+        },
+        {
+          "quality": "Self control",
+          "level": "LOW",
+          "reasoning": "Ganesh's behavior of copying answers suggests a lack of self-control."
+        },
+        {
+          "quality": "Sensitivity",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no information to assess sensitivity."
+        },
+        {
+          "quality": "Self sufficiency",
+          "level": "LOW",
+          "reasoning": "Ganesh's reliance on Balaji's answers suggests a lower level of self-sufficiency."
+        },
+        {
+          "quality": "Social warmth",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no information to assess social warmth."
+        },
+        {
+          "quality": "Tension",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no information to assess tension."
+        }
+      ],
+      "summary": "Based on the observation, Ganesh demonstrates a moderate level of competitiveness but low levels of morality, individualism, maturity, self-control, and self-sufficiency. Other qualities could not be assessed due to insufficient evidence."
+    }
+  },
+  {
+    "student_id": "student_12",
+    "name": "Aasawari Mahavir Mane ",
+    "observations": "Swara has run out of pen\n but is going to get it from Asawari.Swara always asks Asawari questions and\n Swara solves the test. \nIt seems that Asawari's nature is to help.",
+    "assessment": {
+      "assessments": [
+        {
+          "quality": "Academic achievement",
+          "level": "MIDDLE",
+          "reasoning": "Swara solves the test, indicating some level of academic ability."
+        },
+        {
+          "quality": "Boldness",
+          "level": "NOT OBSERVED",
+          "reasoning": "No evidence of boldness is present in the observations."
+        },
+        {
+          "quality": "Social warmth",
+          "level": "NOT OBSERVED",
+          "reasoning": "While Swara interacts with Asawari, it's not clear if this indicates social warmth or simply seeking help. More information is needed."
+        },
+        {
+          "quality": "Self sufficiency",
+          "level": "NOT OBSERVED",
+          "reasoning": "Swara asks Asawari for a pen and questions, suggesting a lack of self-sufficiency, but it's not definitive. More information is needed."
+        },
+        {
+          "quality": "Adaptability",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no evidence of adaptability in the provided text."
+        },
+        {
+          "quality": "Competition",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no evidence of competition in the provided text."
+        },
+        {
+          "quality": "Creativity",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no evidence of creativity in the provided text."
+        },
+        {
+          "quality": "Enthusiasm",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no evidence of enthusiasm in the provided text."
+        },
+        {
+          "quality": "Excitability",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no evidence of excitability in the provided text."
+        },
+        {
+          "quality": "General ability",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no evidence of general ability in the provided text."
+        },
+        {
+          "quality": "Guilt proneness",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no evidence of guilt proneness in the provided text."
+        },
+        {
+          "quality": "Individualism",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no evidence of individualism in the provided text."
+        },
+        {
+          "quality": "Innovation",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no evidence of innovation in the provided text."
+        },
+        {
+          "quality": "Leadership",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no evidence of leadership in the provided text."
+        },
+        {
+          "quality": "Maturity",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no evidence of maturity in the provided text."
+        },
+        {
+          "quality": "Mental health",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no evidence of mental health in the provided text."
+        },
+        {
+          "quality": "Morality",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no evidence of morality in the provided text."
+        },
+        {
+          "quality": "Self control",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no evidence of self control in the provided text."
+        },
+        {
+          "quality": "Sensitivity",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no evidence of sensitivity in the provided text."
+        },
+        {
+          "quality": "Tension",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no evidence of tension in the provided text."
+        }
+      ],
+      "summary": "Based on the limited observations, Swara demonstrates a middle level of academic achievement. Other personality qualities could not be reliably assessed due to insufficient evidence."
+    }
+  },
+  {
+    "student_id": "student_13",
+    "name": "prachi Santosh Shelanke ",
+    "observations": "She was one of those students who are always\n first to point out, when teacher asks 'who did this'?Both of them particularly looked alarmed \nwhen one of their teachers decided to sit at the back..",
+    "assessment": {
+      "assessments": [
+        {
+          "quality": "Morality",
+          "level": "HIGH",
+          "reasoning": "The student is quick to point out wrongdoing, indicating a strong sense of right and wrong."
+        },
+        {
+          "quality": "Guilt proneness",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no evidence to suggest the student is prone to guilt."
+        },
+        {
+          "quality": "Adaptability",
+          "level": "NOT OBSERVED",
+          "reasoning": "The student's reaction to the teacher sitting at the back suggests a potential discomfort with change, but it's not definitive evidence of low adaptability."
+        },
+        {
+          "quality": "Academic achievement",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no information about the student's academic performance."
+        },
+        {
+          "quality": "Boldness",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no information about the student's boldness."
+        },
+        {
+          "quality": "Competition",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no information about the student's competitiveness."
+        },
+        {
+          "quality": "Creativity",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no information about the student's creativity."
+        },
+        {
+          "quality": "Enthusiasm",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no information about the student's enthusiasm."
+        },
+        {
+          "quality": "Excitability",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no information about the student's excitability."
+        },
+        {
+          "quality": "General ability",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no information about the student's general ability."
+        },
+        {
+          "quality": "Individualism",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no information about the student's individualism."
+        },
+        {
+          "quality": "Innovation",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no information about the student's innovation."
+        },
+        {
+          "quality": "Leadership",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no information about the student's leadership."
+        },
+        {
+          "quality": "Maturity",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no information about the student's maturity."
+        },
+        {
+          "quality": "Mental health",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no information about the student's mental health."
+        },
+        {
+          "quality": "Self control",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no information about the student's self control."
+        },
+        {
+          "quality": "Sensitivity",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no information about the student's sensitivity."
+        },
+        {
+          "quality": "Self sufficiency",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no information about the student's self sufficiency."
+        },
+        {
+          "quality": "Social warmth",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no information about the student's social warmth."
+        },
+        {
+          "quality": "Tension",
+          "level": "NOT OBSERVED",
+          "reasoning": "There is no information about the student's tension."
+        }
+      ],
+      "summary": "Based on the limited observations, the student demonstrates a high level of morality. All other qualities were not observed."
+    }
+  }
+]

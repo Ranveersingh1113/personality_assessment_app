@@ -14,7 +14,7 @@ def main():
     print()
     
     # Check if required files exist
-    required_files = ["streamlit_app.py", "personality_assessment.py", "map-t.pdf"]
+    required_files = ["frontend/streamlit_app.py", "personality_assessment.py", "map-t.pdf"]
     missing_files = [f for f in required_files if not os.path.exists(f)]
     
     if missing_files:
@@ -41,7 +41,7 @@ def main():
     
     try:
         # Run streamlit
-        subprocess.run([sys.executable, "-m", "streamlit", "run", "streamlit_app.py", "--server.port", "8501"])
+        subprocess.run([sys.executable, "-m", "streamlit", "run", "frontend/streamlit_app.py", "--server.port", "8501"])
     except KeyboardInterrupt:
         print("\n👋 Application stopped by user")
     except Exception as e:

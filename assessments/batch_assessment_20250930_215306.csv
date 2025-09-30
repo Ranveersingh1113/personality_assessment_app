@@ -1,0 +1,22 @@
+Name,Observations,Predicted Labels,Final Labels
+ Mangesh Pandurang Parit ,"Carefully, independently solved the test.Didn't ask many questions.No help was needed.","[""academic-achievement-high"", ""self-sufficiency-high""]","[""academic-achievement-high"", ""self-sufficiency-high""]"
+Swaraj Umesh Chauhan,Was reading aloud.Solved the test carefully.No help was needed.No questions asked.,"[""academic-achievement-middle"", ""general-ability-middle"", ""self-sufficiency-high""]","[""academic-achievement-middle"", ""general-ability-middle"", ""self-sufficiency-high""]"
+Balaji Shivaji Palnate,"Carefully solved the test.Didn't need much help.A lot about the little things particular
+e.g.-Time,What to Write, Where to Whrite","[""academic-achievement-middle"", ""general-ability-middle"", ""self-sufficiency-middle""]","[""academic-achievement-middle"", ""general-ability-middle"", ""self-sufficiency-middle""]"
+Shlok Balaji Pethkar,"Was reading aloud.Constant turmoil, no stability. Attempt to change the row.Submitted the test first.","[""adaptability-low"", ""competition-high"", ""excitability-high"", ""maturity-low"", ""self-control-low"", ""tension-high""]","[""adaptability-low"", ""competition-high"", ""excitability-high"", ""maturity-low"", ""self-control-low"", ""tension-high""]"
+Shravni Maruti Honraw,Constantly talking to others. I was asking and writing answers.It became quiet when I had to change the place,"[""adaptability-middle"", ""academic-achievement-middle"", ""excitability-high"", ""maturity-low"", ""self-control-low""]","[""adaptability-middle"", ""academic-achievement-middle"", ""excitability-high"", ""maturity-low"", ""self-control-low""]"
+Anvita Sandip Bawkar,"I was reading it with a stutter.
+But she was far ahead in solving the test.When asked, she said she had read and solved everything.","[""academic-achievement-high"", ""tension-middle""]","[""academic-achievement-high"", ""tension-middle""]"
+Sangharsh Jaypal Sonkamble,He was solving the test with concentration by reading it out loud.Asked what a fight is,"[""academic-achievement-middle"", ""maturity-low"", ""sensitivity-not obsserved""]","[""academic-achievement-middle"", ""maturity-low"", ""sensitivity-not obsserved""]"
+Samarth Anil Dhule,"Samarth was solving Suraj's test.My 30th question was being asked.Constantly out of focus. Constantly chatters. Giving Instructions but not paying attention, not listenning","[""academic-achievement-low"", ""excitability-high"", ""self-control-low"", ""enthusiasm-low"", ""maturity-low""]","[""academic-achievement-low"", ""excitability-high"", ""self-control-low"", ""enthusiasm-low"", ""maturity-low""]"
+Aaryan Sunil Misal   ,Well solved the map test.,[],[]
+Nikhil Malhari Jambhure,"While solving the test,
+ I am solving the test calmly and thoughtfully.The question is, what does disagreement mean?","[""academic-achievement-middle"", ""general-ability-middle"", ""self-control-middle""]","[""academic-achievement-middle"", ""general-ability-middle"", ""self-control-middle""]"
+Ganesh Lakshman Korlelu,Both Swaraj and Ganesh are discussing and solving the test.Ganesh is solving the test by looking at Balaji.,"[""competition-middle"", ""morality-low"", ""maturity-low"", ""self-control-low"", ""self-sufficiency-low""]","[""competition-middle"", ""morality-low"", ""maturity-low"", ""self-control-low"", ""self-sufficiency-low""]"
+Aasawari Mahavir Mane ,"Swara has run out of pen
+ but is going to get it from Asawari.Swara always asks Asawari questions and
+ Swara solves the test. 
+It seems that Asawari's nature is to help.","[""academic-achievement-middle"", ""self-sufficiency-low""]","[""academic-achievement-middle"", ""self-sufficiency-low""]"
+prachi Santosh Shelanke ,"She was one of those students who are always
+ first to point out, when teacher asks 'who did this'?Both of them particularly looked alarmed 
+when one of their teachers decided to sit at the back..","[""morality-high"", ""excitability-middle""]","[""morality-high"", ""excitability-middle""]"

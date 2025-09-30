@@ -7,7 +7,11 @@ class CSVReferenceProcessor:
     """Process the actual CSV reference data from the NGO"""
     
     def __init__(self, csv_file_path: str = "Obseervations check list for feeding.1.xlsx - observation check list 1.csv"):
-        self.csv_file_path = csv_file_path
+        # Resolve CSV path relative to project root so it works from any CWD
+        project_root = os.path.dirname(os.path.abspath(__file__))
+        tentative = csv_file_path
+        abs_path = tentative if os.path.isabs(tentative) else os.path.join(project_root, tentative)
+        self.csv_file_path = abs_path
         self.reference_data = {}
         
     def load_reference_data(self) -> Dict[str, Dict[str, List[str]]]:

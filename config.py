@@ -4,8 +4,18 @@ Modify these settings to customize the system behavior
 """
 
 # Gemini Configuration
-GEMINI_MODEL = "gemini-1.5-pro"  # Alternative: "gemini-1.5-flash"
+# Use a supported Gemini model identifier (seen in your key's list)
+GEMINI_MODEL = "gemini-2.5-flash"
 GEMINI_TEMPERATURE = 0.1  # Lower = more consistent, Higher = more creative
+
+# Rate Limiting Configuration
+ENABLE_RATE_LIMITING = True
+RATE_LIMIT_DELAY = 1.0  # Reduced delay for paid tier
+MAX_REQUESTS_PER_MINUTE = 60  # Higher limit for paid tier
+MAX_REQUESTS_PER_DAY = 10000  # Updated for paid tier
+RETRY_ON_RATE_LIMIT = True
+MAX_RETRIES = 3
+RETRY_DELAY = 15  # Reduced retry delay for paid tier
 
 # Hugging Face Embeddings Configuration
 EMBEDDING_MODEL = "sentence-transformers/all-MiniLM-L6-v2"  # Fast and effective embeddings

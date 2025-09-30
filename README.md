@@ -126,8 +126,9 @@ service learning/
 
 ### Architecture
 - **Vector Database**: ChromaDB with Hugging Face embeddings (All-MiniLM-L6-v2)
-- **LLM**: Google Gemini 1.5 Pro for personality analysis
+- **LLM**: Google Gemini 1.5 Flash for personality analysis (optimized for rate limits)
 - **RAG Pipeline**: Retrieves relevant context from PDF and CSV reference data
+- **Rate Limiting**: Built-in rate limiting to prevent quota exceeded errors
 - **Multi-Agent**: Specialized prompts for different assessment aspects
 
 ### Data Flow
@@ -143,6 +144,27 @@ service learning/
 - **Batch Processing**: Processes multiple students sequentially
 - **Vector Database**: Fast semantic search across reference materials
 - **Memory Usage**: Efficient chunking and retrieval
+
+## 🚦 Rate Limiting & Quota Management
+
+The system includes built-in rate limiting to prevent quota exceeded errors:
+
+### Rate Limits
+- **Per Minute**: 15 requests (configurable)
+- **Per Day**: 1000 requests (configurable)
+- **Delay Between Calls**: 2 seconds (configurable)
+
+### Features
+- **Automatic Retry**: Retries failed requests with exponential backoff
+- **Status Monitoring**: Real-time rate limit status in the sidebar
+- **Smart Delays**: Automatically waits when approaching limits
+- **Error Handling**: Clear error messages for quota issues
+
+### Tips for Free Tier Users
+- Wait 1-2 minutes between assessments
+- Use batch processing for multiple students
+- Monitor the rate limiting status in the sidebar
+- Consider upgrading to a paid plan for higher limits
 
 ## 🛠️ Customization
 
@@ -169,7 +191,13 @@ Modify the model configuration in `PersonalityAssessmentSystem.__init__()`
    - Verify internet connection
    - Review observer notes for clarity
 
-3. **"Vector database error"**
+3. **"Rate limit exceeded (429 error)"**
+   - Wait 1-2 minutes between assessments
+   - Check the rate limiting status in the sidebar
+   - Consider upgrading to a paid API plan
+   - Use batch processing for multiple students
+
+4. **"Vector database error"**
    - Ensure all required files are present
    - Check file permissions
    - Try deleting and recreating the database

@@ -2,9 +2,19 @@ import streamlit as st
 import pandas as pd
 import json
 import os
+import sys
 from datetime import datetime
-from personality_assessment import PersonalityAssessmentSystem
-from csv_reference_processor import CSVReferenceProcessor
+
+# Ensure project root is on sys.path so sibling packages import correctly
+_FRONTEND_DIR = os.path.dirname(os.path.abspath(__file__))
+_PROJECT_ROOT = os.path.dirname(_FRONTEND_DIR)
+if _PROJECT_ROOT not in sys.path:
+    sys.path.insert(0, _PROJECT_ROOT)
+
+from ai_core.personality_assessment import PersonalityAssessmentSystem
+from ai_core.csv_reference_processor import CSVReferenceProcessor
+import re
+from config import PERSONALITY_QUALITIES
 
 # Page configuration
 st.set_page_config(
@@ -62,7 +72,7 @@ def main():
         
         # Rate limiting status
         try:
-            from rate_limiter import get_rate_limiter
+            from backend.rate_limiter import get_rate_limiter
             rate_limiter = get_rate_limiter()
             status = rate_limiter.get_status()
             
@@ -85,7 +95,7 @@ def main():
         st.markdown("### 📊 Quick Stats")
         if st.session_state.system_ready:
             st.info("Vector database loaded with reference data")
-            st.info("Using Gemini 1.5 Flash + Hugging Face All-MiniLM-L6-v2")
+            st.info("Using Gemini 2.x + Hugging Face All-MiniLM-L6-v2")
         else:
             st.info("System needs initialization")
     
@@ -303,9 +313,7 @@ def perform_assessment(student_name, observations):
             
             # Display in columns
             cols = st.columns(4)
-            colors = ['success', 'warning', 'danger', 'secondary']
-            
-            for i, (level, color) in enumerate(zip(levels, colors)):
+            for i, level in enumerate(levels):
                 with cols[i]:
                     st.metric(
                         label=level,
@@ -331,7 +339,6 @@ def perform_assessment(student_name, observations):
             
             # Save assessment
             save_assessment(student_name, observations, result)
-            
         else:
             st.warning("No assessment data available")
             
@@ -430,7 +437,6 @@ def render_review_interface():
     results = st.session_state.batch_results or []
     timestamp = st.session_state.batch_timestamp or datetime.now().strftime("%Y%m%d_%H%M%S")
     review_df = st.session_state.review_df
-    # Ensure legacy 'Error' column is removed if present
     if review_df is not None and 'Error' in review_df.columns:
         review_df = review_df.drop(columns=['Error'])
         st.session_state.review_df = review_df
@@ -449,7 +455,6 @@ def render_review_interface():
 
     st.markdown("---")
     st.subheader("🧐 Review and Approve Predicted Labels")
-
     show_debug = st.toggle("Show raw assessments (debug)", value=False)
 
     edited_df = st.data_editor(
@@ -470,7 +475,9 @@ def render_review_interface():
         }
     )
 
-    # Do not persist on every tick to avoid per-change processing; persist on finalize only
+    all_approved = bool(len(edited_df) > 0 and edited_df["Approved"].all())
+    if not all_approved:
+        st.info("Review rows and tick 'Approved' for each before finalizing.")
 
     if show_debug and results:
         st.markdown("---")
@@ -481,10 +488,8 @@ def render_review_interface():
                     st.error(r.get('error'))
                 elif r.get('assessment'):
                     st.code(json.dumps(r['assessment'], indent=2, ensure_ascii=False))
-
-    all_approved = bool(len(edited_df) > 0 and edited_df["Approved"].all())
-    if not all_approved:
-        st.info("Review rows and tick 'Approved' for each before finalizing.")
+                else:
+                    st.warning("No assessment returned for this row.")
 
     if st.button("✅ Finalize & Download CSV", type="primary", disabled=not all_approved):
         # Persist final edits once
@@ -509,8 +514,41 @@ def render_review_interface():
             mime="text/csv"
         )
 
+def _normalize_quality(text: str, allowed: set) -> str:
+    t = text.lower().strip()
+    # keep letters and spaces
+    t = re.sub(r"[^a-z\s]", " ", t)
+    # collapse spaces and hyphenate
+    t = "-".join([p for p in t.split() if p])
+    if t in allowed:
+        return t
+    # token overlap fallback
+    tokens = set(t.split("-"))
+    best = None
+    best_score = 0
+    for a in allowed:
+        score = len(tokens.intersection(set(a.split("-"))))
+        if score > best_score:
+            best, best_score = a, score
+    return best if best and best_score > 0 else ""
+
 def extract_predicted_labels(assessment_result):
-    """Return list of predicted labels in 'quality-level' format excluding NOT OBSERVED."""
+    """Return normalized labels in 'quality-level' format, filtering invalid/duplicate entries."""
+    # Allowed levels mapping
+    level_map = {
+        'low': 'low',
+        'middle': 'middle',
+        'mid': 'middle',
+        'medium': 'middle',
+        'high': 'high',
+        'not observed': 'not observed',
+        'not_observed': 'not observed',
+        'notobserved': 'not observed',
+        'na': 'not observed',
+        'n/a': 'not observed'
+    }
+    # Allowed qualities set (normalized hyphen-case) from config
+    allowed_qualities = set([q.lower().replace(' ', '-') for q in PERSONALITY_QUALITIES])
     try:
         items = assessment_result.get('assessments', [])
     except AttributeError:
@@ -518,13 +556,26 @@ def extract_predicted_labels(assessment_result):
     labels = []
     for item in items:
         try:
-            quality = str(item.get('quality', '')).strip().lower().replace(' ', '-')
-            level = str(item.get('level', '')).strip().lower()
-            if level and level != 'not observed' and quality:
-                labels.append(f"{quality}-{level}")
+            q_raw = str(item.get('quality', ''))
+            q_norm = _normalize_quality(q_raw, allowed_qualities)
+            l_raw = str(item.get('level', '')).strip().lower()
+            # extract clean level even if noisy text like "Level: HIGH" or "high." etc.
+            m = re.search(r"low|middle|mid|medium|high|not\s*observed|n/?a", l_raw)
+            key = m.group(0) if m else l_raw
+            key = key.replace('  ', ' ').replace('_', ' ')
+            l_norm = level_map.get(key, level_map.get(key.strip(), key.strip()))
+            if q_norm in allowed_qualities and l_norm in ('low', 'middle', 'high'):
+                labels.append(f"{q_norm}-{l_norm}")
         except Exception:
             continue
-    return labels
+    # Deduplicate while preserving order
+    seen = set()
+    deduped = []
+    for lab in labels:
+        if lab not in seen:
+            seen.add(lab)
+            deduped.append(lab)
+    return deduped
 
 def save_assessment(student_name, observations, result):
     """Save individual assessment to file"""
@@ -549,3 +600,5 @@ def save_assessment(student_name, observations, result):
 
 if __name__ == "__main__":
     main()
+
+
