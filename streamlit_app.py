@@ -29,6 +29,75 @@ if 'saved_batch_json' not in st.session_state:
     st.session_state.saved_batch_json = None
 
 def main():
+    # Add this CSS right after st.title() 
+    st.markdown("""
+    <style>
+        /* Global dark theme */
+        .stApp {
+            background-color: #1E1E1E;
+        }
+        
+        /* Make all text visible on dark background */
+        .stMarkdown, .stText, h1, h2, h3, p {
+            color: #E0E0E0 !important;
+        }
+        
+        /* Style cards consistently across tabs */
+        .profile-card, .report-card, .info-card {
+            background-color: #2D2D2D;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.2);
+            margin-bottom: 20px;
+        }
+        
+        /* Style Streamlit inputs */
+        .stTextInput, .stTextArea, .stSelectbox {
+            background-color: #363636 !important;
+            color: #E0E0E0 !important;
+            border-color: #4D4D4D !important;
+        }
+        
+        /* Style metric cards */
+        .stMetric {
+            background-color: #2D2D2D !important;
+            border-radius: 10px !important;
+            padding: 10px !important;
+        }
+        
+        /* Style info/success/error boxes */
+        .stAlert {
+            background-color: #2D2D2D !important;
+            color: #E0E0E0 !important;
+            border: 1px solid #4D4D4D !important;
+        }
+        
+        /* Style data tables/frames */
+        .stDataFrame {
+            background-color: #2D2D2D !important;
+            color: #E0E0E0 !important;
+        }
+        
+        /* Style tabs */
+        .stTab {
+            background-color: #2D2D2D !important;
+            color: #E0E0E0 !important;
+        }
+        
+        /* Style buttons */
+        .stButton button {
+            background-color: #4CAF50 !important;
+            color: white !important;
+            border: none !important;
+        }
+        
+        /* Style sidebar */
+        .css-1d391kg {  /* Sidebar class */
+            background-color: #2D2D2D !important;
+        }
+    </style>
+    """, unsafe_allow_html=True)
+
     st.title("🎓 Personality Assessment System for Students")
     st.markdown("---")
     
@@ -95,7 +164,7 @@ def main():
         return
     
     # Main tabs
-    ttab1, tab2, tab3, tab4, tab5 = st.tabs([
+    tab1, tab2, tab3, tab4, tab5 = st.tabs([
         "🔍 Individual Assessment", 
         "👥 Batch Assessment", 
         "📊 Student Dashboard",
@@ -210,54 +279,117 @@ def batch_assessment_tab():
         render_review_interface()
 
 def student_dashboard_tab():
-    """Display the student personality dashboard"""
+    """Display the student personality dashboard (shows all 20 qualities)."""
     st.markdown("""
     <style>
-        /* Profile card */
-        .profile-card {
-            background-color: #f0f2f6;
-            border-radius: 15px;
-            padding: 20px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        
-        /* Report card */
-        .report-card {
-            background-color: #ffffff;
-            border-radius: 15px;
-            padding: 25px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-        
         /* Trait bars */
         .trait-bar {
-            margin-bottom: 15px;
+            margin-bottom: 12px;
         }
-        
+        .trait-bar .label {
+            font-size: 14px;
+            margin-bottom: 6px;
+        }
         .bar {
             height: 18px;
             border-radius: 9px;
-            margin-top: 5px;
         }
-        
-        .bar-high { background-color: #5cb85c; }
-        .bar-middle { background-color: #f0ad4e; }
-        .bar-low { background-color: #d9534f; }
+        .bar-high { background-color: rgba(92, 184, 92, 0.9); }
+        .bar-middle { background-color: rgba(240, 173, 78, 0.9); }
+        .bar-low { background-color: rgba(217, 83, 79, 0.9); }
+        .bar-na { background-color: rgba(224, 224, 224, 0.3); }
     </style>
     """, unsafe_allow_html=True)
+    
+    # Helper: build SWOT and summary text from 20 traits
+    def build_swot_and_summary(student_name, traits_list):
+        # traits_list: [{'quality':..., 'level':..., 'width':..., 'cls':...}, ...]
+        strengths = [t for t in traits_list if t['level'] == 'HIGH']
+        weaknesses = [t for t in traits_list if t['level'] == 'LOW']
+        middles = [t for t in traits_list if t['level'] == 'MIDDLE']
+        not_obs = [t for t in traits_list if t['level'] == 'NOT OBSERVED']
 
-    # Create session state for selected student if not exists
-    if 'selected_student' not in st.session_state:
-        st.session_state.selected_student = None
+        # Build simple sentences for each category
+        lines = []
+        lines.append(f"SWOT Report for {student_name}")
+        lines.append("=" * (10 + len(student_name)))
+        lines.append("")
 
-    # Load available assessments
+        # Strengths
+        lines.append("Strengths:")
+        if strengths:
+            for s in strengths:
+                lines.append(f"- {s['quality']}: Student demonstrates strength in {s['quality'].lower()}, which can be leveraged in group activities and leadership roles.")
+        else:
+            lines.append("- No clear high-rated qualities identified.")
+
+        lines.append("")
+
+        # Weaknesses
+        lines.append("Weaknesses:")
+        if weaknesses:
+            for w in weaknesses:
+                lines.append(f"- {w['quality']}: Shows limited evidence of {w['quality'].lower()}; consider targeted support and practice.")
+        else:
+            lines.append("- No prominent low-rated qualities identified.")
+
+        lines.append("")
+
+        # Opportunities (Middle)
+        lines.append("Opportunities (can be improved):")
+        if middles:
+            for m in middles:
+                lines.append(f"- {m['quality']}: Has moderate evidence for {m['quality'].lower()}; with encouragement and focused activities this can improve.")
+        else:
+            lines.append("- No moderate-rated qualities identified.")
+
+        lines.append("")
+
+        # Not Observed
+        if not_obs:
+            lines.append("Not Observed:")
+            for n in not_obs:
+                lines.append(f"- {n['quality']}: Not observed in the session; collect more observations to evaluate.")
+            lines.append("")
+
+        # Summary of all 20 traits
+        lines.append("Summary of 20 Personality Traits:")
+        for t in traits_list:
+            lines.append(f"- {t['quality']}: {t['level']}")
+
+        # Short overall summary paragraph
+        high_count = len(strengths)
+        low_count = len(weaknesses)
+        mid_count = len(middles)
+        lines.append("")
+        lines.append("Overall Summary:")
+        lines.append(f"The assessment shows {high_count} strength(s), {mid_count} mid-range quality(ies) and {low_count} area(s) needing attention among the 20 traits. Use strengths to build confidence and target the low and middle areas with specific activities and supports.")
+
+        content = "\n".join(lines)
+        return content
+
+    def generate_and_offer_report(student_name, report_text, selected_file):
+        # show report in UI
+        with st.expander("📄 Generated SWOT & Summary (preview)", expanded=True):
+            st.code(report_text)
+
+        # provide download
+        b = report_text.encode("utf-8")
+        btn_key = f"download_report_{selected_file}"
+        st.download_button(
+            label="⬇️ Download SWOT Report (PDF file)",
+            data=b,
+            file_name=f"{student_name.replace(' ', '_')}_SWOT.pdf",
+            mime="application/pdf",
+            key=btn_key
+        )
+
+    # Ensure assessments folder exists
     try:
         assessment_files = []
         if os.path.exists("assessments"):
-            assessment_files = [f for f in os.listdir("assessments") 
-                              if f.endswith('.json') and not f.startswith('batch_')]
+            assessment_files = [f for f in os.listdir("assessments")
+                                if f.endswith('.json') and not f.startswith('batch_')]
     except Exception as e:
         st.error(f"Error loading assessments: {str(e)}")
         return
@@ -274,93 +406,149 @@ def student_dashboard_tab():
         format_func=lambda x: x.split('_')[0].replace('_', ' ').title()
     )
 
-    if selected_file:
+    if not selected_file:
+        return
+
+    try:
+        with open(f"assessments/{selected_file}", "r", encoding="utf-8") as f:
+            assessment_data = json.load(f)
+    except Exception as e:
+        st.error(f"Error reading assessment file: {str(e)}")
+        return
+
+    # Normalize assessments into a lookup by quality (case-insensitive)
+    raw_assessments = assessment_data.get('assessment', {}).get('assessments', []) or []
+    lookup = {}
+    for a in raw_assessments:
+        q = str(a.get('quality', '')).strip().lower()
+        if q:
+            lookup[q] = a
+
+    # Full ordered list of 20 qualities (matches README / design)
+    qualities_order = [
+        "Adaptability", "Academic achievement", "Boldness", "Competition",
+        "Creativity", "Enthusiasm", "Excitability", "General ability",
+        "Guilt proneness", "Individualism", "Innovation", "Leadership",
+        "Maturity", "Mental health", "Morality", "Self control",
+        "Sensitivity", "Self sufficiency", "Social warmth", "Tension"
+    ]
+
+    # Build traits list (ensures all 20 are present)
+    traits = []
+    for q in qualities_order:
+        key = q.strip().lower()
+        item = lookup.get(key)
+        if item:
+            level = item.get('level', 'NOT OBSERVED')
+        else:
+            level = 'NOT OBSERVED'
+        # Map levels to width & class
+        if level == 'HIGH':
+            width = 80
+            cls = 'high'
+        elif level == 'MIDDLE':
+            width = 55
+            cls = 'middle'
+        elif level == 'LOW':
+            width = 30
+            cls = 'low'
+        else:
+            width = 6
+            cls = 'na'
+        traits.append({'quality': q, 'level': level, 'width': width, 'cls': cls})
+
+    # Layout: profile (1) and report (3)
+    profile_col, report_col = st.columns([1, 3])
+
+    # Profile Card
+    with profile_col:
+        student_name = assessment_data.get('student_name', selected_file.split('_')[0].replace('_', ' ').title())
+        timestamp = assessment_data.get('timestamp', '')
+        date_str = ""
         try:
-            with open(f"assessments/{selected_file}", 'r') as f:
-                assessment_data = json.load(f)
-            
-            # Create two-column layout
-            profile_col, report_col = st.columns([1, 3])
+            if timestamp:
+                # support ISO and simple formats
+                try:
+                    date_str = datetime.fromisoformat(timestamp).strftime('%d / %m / %Y')
+                except Exception:
+                    date_str = timestamp.split('T')[0]
+        except Exception:
+            date_str = ""
 
-            # Profile Column (Left)
-            with profile_col:
-                st.markdown(f"""
-                <div class="profile-card">
-                    <img src="https://placeholder.co/150" 
-                         style="width:150px;height:150px;border-radius:50%;margin-bottom:15px;">
-                    <h2 style="margin:0;padding:0;">{assessment_data['student_name']}</h2>
-                    <div style="margin-top:20px;text-align:left;">
-                        <p><strong>Assessment Date:</strong><br>
-                           {assessment_data['timestamp'][:10]}</p>
-                    </div>
+        st.markdown(f"""
+            <div class="profile-card">
+                <img src="https://via.placeholder.com/150" style="width:130px;height:130px;border-radius:50%;margin-bottom:12px;">
+                <div style="font-size:20px;font-weight:600;margin-bottom:8px;color:#111;">{student_name}</div>
+                <div style="text-align:left;color:#111;">
+                    <div><strong>Class:</strong> 7th</div>
+                    <div><strong>Section:</strong> B</div>
+                    <div><strong>School:</strong> Vikram School</div>
+                    <div><strong>Location:</strong> Saswad</div>
                 </div>
-                """, unsafe_allow_html=True)
+            </div>
+        """, unsafe_allow_html=True)
 
-            # Report Column (Right)
-            with report_col:
-                st.markdown('<div class="report-card">', unsafe_allow_html=True)
-                
-                # Header with export button
-                col1, col2 = st.columns([3, 1])
-                with col1:
-                    st.subheader("Personality Assessment Results")
-                with col2:
-                    if st.button("📊 Export Report"):
-                        st.download_button(
-                            "⬇️ Download Report",
-                            data=json.dumps(assessment_data, indent=2),
-                            file_name=f"{assessment_data['student_name']}_report.json",
-                            mime="application/json"
-                        )
+    # Report Card
+    with report_col:
+        # Header - last observation date and Generate button
+        last_obs_display = date_str or "15 / 10 / 2025"
+        hcol1, hcol2 = st.columns([3, 1])
+        with hcol1:
+            st.markdown(f"<div style='padding:6px 0;color:#fff;' class='date'>Last Observation Date: {last_obs_display}</div>", unsafe_allow_html=True)
+        with hcol2:
+            if st.button("Generate Report ➡️", key=f"gen_report_{selected_file}"):
+                report_text = build_swot_and_summary(student_name, traits)
+                # store in session for persistence per selected file
+                st.session_state[f"report_{selected_file}"] = report_text
+                generate_and_offer_report(student_name, report_text, selected_file)
 
-                # Display traits in two columns
-                trait_col1, trait_col2 = st.columns(2)
+        st.markdown('<div class="report-card">', unsafe_allow_html=True)
+        st.subheader("Latest Observation Record")
 
-                assessments = assessment_data['assessment'].get('assessments', [])
-                mid_point = len(assessments) // 2
+        # Two columns for 20 traits (10 each)
+        col1, col2 = st.columns(2)
 
-                def render_trait_bar(trait):
-                    level_class = {
-                        'HIGH': 'high',
-                        'MIDDLE': 'middle',
-                        'LOW': 'low'
-                    }.get(trait['level'], 'middle')
-                    
-                    width = {
-                        'HIGH': 90,
-                        'MIDDLE': 60,
-                        'LOW': 30
-                    }.get(trait['level'], 50)
+        def render_trait_bar_html(quality, cls, width):
+            return f"""
+                <div class="trait-bar">
+                    <div class="label">{quality}</div>
+                    <div class="bar bar-{cls}" style="width: {width}%;"></div>
+                </div>
+            """
 
-                    return f"""
-                    <div class="trait-bar">
-                        <div>{trait['quality']}</div>
-                        <div class="bar bar-{level_class}" style="width: {width}%;"></div>
-                    </div>
-                    """
+        # Render first 10 in left column
+        with col1:
+            for t in traits[:10]:
+                st.markdown(render_trait_bar_html(t['quality'], t['cls'], t['width']), unsafe_allow_html=True)
 
-                # Render first column traits
-                with trait_col1:
-                    for trait in assessments[:mid_point]:
-                        if trait['level'] != 'NOT OBSERVED':
-                            st.markdown(render_trait_bar(trait), unsafe_allow_html=True)
+        # Render last 10 in right column
+        with col2:
+            for t in traits[10:]:
+                st.markdown(render_trait_bar_html(t['quality'], t['cls'], t['width']), unsafe_allow_html=True)
 
-                # Render second column traits
-                with trait_col2:
-                    for trait in assessments[mid_point:]:
-                        if trait['level'] != 'NOT OBSERVED':
-                            st.markdown(render_trait_bar(trait), unsafe_allow_html=True)
+        # Optional summary
+        summary = assessment_data.get('assessment', {}).get('summary') or ""
+        if summary:
+            st.markdown("---")
+            st.subheader("📝 Summary")
+            st.info(summary)
 
-                # Display summary if available
-                if assessment_data['assessment'].get('summary'):
-                    st.markdown("---")
-                    st.subheader("📝 Summary")
-                    st.info(assessment_data['assessment']['summary'])
+        # If a report was already generated earlier, show & allow download
+        saved_key = f"report_{selected_file}"
+        if saved_key in st.session_state:
+            st.markdown("---")
+            st.subheader("📄 Generated SWOT & Summary")
+            st.code(st.session_state[saved_key])
+            st.download_button(
+                label="⬇️ Download Previously Generated SWOT Report (PDF)",
+                data=st.session_state[saved_key].encode("utf-8"),
+                file_name=f"{student_name.replace(' ', '_')}_SWOT.pdf",
+                mime="application/pdf",
+                key=f"dl_prev_{selected_file}"
+            )
 
-                st.markdown('</div>', unsafe_allow_html=True)
-
-        except Exception as e:
-            st.error(f"Error loading assessment: {str(e)}")
+        st.markdown('</div>', unsafe_allow_html=True)
+# ...existing code...
 
 def export_template_tab():
     st.header("📁 Export Reference Sheet Template")
@@ -429,76 +617,6 @@ def system_info_tab():
         else:
             st.info("📁 Assessment files: 0")
 
-def perform_assessment(student_name, observations):
-    """Perform individual student assessment"""
-    try:
-        with st.spinner("🔍 Analyzing student behavior and assessing personality traits..."):
-            result = st.session_state.assessment_system.assess_student_personality(observations)
-        
-        # Display results
-        st.subheader(f"📊 Assessment Results for {student_name}")
-        
-        if result.get('error'):
-            error_msg = result['error']
-            if "429" in error_msg and "quota" in error_msg.lower():
-                st.error("❌ Rate limit exceeded! Please wait a moment and try again.")
-                st.info("💡 Tips to avoid rate limits:")
-                st.info("• Wait 1-2 minutes between assessments")
-                st.info("• Consider upgrading to a paid API plan")
-                st.info("• Use batch processing for multiple students")
-            else:
-                st.error(f"❌ Assessment failed: {error_msg}")
-            return
-        
-        if result.get('raw_response'):
-            st.warning("⚠️ Raw response received (JSON parsing failed)")
-            st.code(result['raw_response'])
-            return
-        
-        if result.get('assessments'):
-            # Group assessments by level
-            levels = ['HIGH', 'MIDDLE', 'LOW', 'NOT OBSERVED']
-            grouped = {level: [] for level in levels}
-            
-            for assessment in result['assessments']:
-                grouped[assessment['level']].append(assessment)
-            
-            # Display in columns
-            cols = st.columns(4)
-            colors = ['success', 'warning', 'danger', 'secondary']
-            
-            for i, (level, color) in enumerate(zip(levels, colors)):
-                with cols[i]:
-                    st.metric(
-                        label=level,
-                        value=len(grouped[level]),
-                        delta=f"{len(grouped[level])} qualities"
-                    )
-            
-            # Detailed breakdown
-            st.subheader("📋 Detailed Assessment")
-            for level in levels:
-                if grouped[level]:
-                    with st.expander(f"{level} ({len(grouped[level])} qualities)"):
-                        for assessment in grouped[level]:
-                            st.write(f"**{assessment['quality']}**")
-                            if assessment.get('reasoning'):
-                                st.write(f"*{assessment['reasoning']}*")
-                            st.divider()
-            
-            # Summary
-            if result.get('summary'):
-                st.subheader("📝 Overall Summary")
-                st.info(result['summary'])
-            
-            # Save assessment
-            save_assessment(student_name, observations, result)
-            
-        else:
-            st.warning("No assessment data available")
-            
-    except Exception as e:
-        st.error(f"❌ Assessment failed: {str(e)}")
 
 def process_batch_assessment(df):
     """Process batch assessment from CSV"""
