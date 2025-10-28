@@ -95,7 +95,13 @@ def main():
         return
     
     # Main tabs
-    tab1, tab2, tab3, tab4 = st.tabs(["🔍 Individual Assessment", "👥 Batch Assessment", "📁 Export Template", "📋 System Info"])
+    ttab1, tab2, tab3, tab4, tab5 = st.tabs([
+        "🔍 Individual Assessment", 
+        "👥 Batch Assessment", 
+        "📊 Student Dashboard",
+        "📁 Export Template", 
+        "📋 System Info"
+    ])
     
     with tab1:
         individual_assessment_tab()
@@ -104,9 +110,12 @@ def main():
         batch_assessment_tab()
     
     with tab3:
-        export_template_tab()
+        student_dashboard_tab()
     
     with tab4:
+        export_template_tab()
+    
+    with tab5:
         system_info_tab()
 
 def individual_assessment_tab():
@@ -199,6 +208,159 @@ def batch_assessment_tab():
 
     if st.session_state.review_df is not None:
         render_review_interface()
+
+def student_dashboard_tab():
+    """Display the student personality dashboard"""
+    st.markdown("""
+    <style>
+        /* Profile card */
+        .profile-card {
+            background-color: #f0f2f6;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        /* Report card */
+        .report-card {
+            background-color: #ffffff;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        /* Trait bars */
+        .trait-bar {
+            margin-bottom: 15px;
+        }
+        
+        .bar {
+            height: 18px;
+            border-radius: 9px;
+            margin-top: 5px;
+        }
+        
+        .bar-high { background-color: #5cb85c; }
+        .bar-middle { background-color: #f0ad4e; }
+        .bar-low { background-color: #d9534f; }
+    </style>
+    """, unsafe_allow_html=True)
+
+    # Create session state for selected student if not exists
+    if 'selected_student' not in st.session_state:
+        st.session_state.selected_student = None
+
+    # Load available assessments
+    try:
+        assessment_files = []
+        if os.path.exists("assessments"):
+            assessment_files = [f for f in os.listdir("assessments") 
+                              if f.endswith('.json') and not f.startswith('batch_')]
+    except Exception as e:
+        st.error(f"Error loading assessments: {str(e)}")
+        return
+
+    if not assessment_files:
+        st.info("No student assessments available. Complete an individual or batch assessment first.")
+        return
+
+    # Student selector
+    st.subheader("👤 Select Student")
+    selected_file = st.selectbox(
+        "Choose a student assessment",
+        options=assessment_files,
+        format_func=lambda x: x.split('_')[0].replace('_', ' ').title()
+    )
+
+    if selected_file:
+        try:
+            with open(f"assessments/{selected_file}", 'r') as f:
+                assessment_data = json.load(f)
+            
+            # Create two-column layout
+            profile_col, report_col = st.columns([1, 3])
+
+            # Profile Column (Left)
+            with profile_col:
+                st.markdown(f"""
+                <div class="profile-card">
+                    <img src="https://placeholder.co/150" 
+                         style="width:150px;height:150px;border-radius:50%;margin-bottom:15px;">
+                    <h2 style="margin:0;padding:0;">{assessment_data['student_name']}</h2>
+                    <div style="margin-top:20px;text-align:left;">
+                        <p><strong>Assessment Date:</strong><br>
+                           {assessment_data['timestamp'][:10]}</p>
+                    </div>
+                </div>
+                """, unsafe_allow_html=True)
+
+            # Report Column (Right)
+            with report_col:
+                st.markdown('<div class="report-card">', unsafe_allow_html=True)
+                
+                # Header with export button
+                col1, col2 = st.columns([3, 1])
+                with col1:
+                    st.subheader("Personality Assessment Results")
+                with col2:
+                    if st.button("📊 Export Report"):
+                        st.download_button(
+                            "⬇️ Download Report",
+                            data=json.dumps(assessment_data, indent=2),
+                            file_name=f"{assessment_data['student_name']}_report.json",
+                            mime="application/json"
+                        )
+
+                # Display traits in two columns
+                trait_col1, trait_col2 = st.columns(2)
+
+                assessments = assessment_data['assessment'].get('assessments', [])
+                mid_point = len(assessments) // 2
+
+                def render_trait_bar(trait):
+                    level_class = {
+                        'HIGH': 'high',
+                        'MIDDLE': 'middle',
+                        'LOW': 'low'
+                    }.get(trait['level'], 'middle')
+                    
+                    width = {
+                        'HIGH': 90,
+                        'MIDDLE': 60,
+                        'LOW': 30
+                    }.get(trait['level'], 50)
+
+                    return f"""
+                    <div class="trait-bar">
+                        <div>{trait['quality']}</div>
+                        <div class="bar bar-{level_class}" style="width: {width}%;"></div>
+                    </div>
+                    """
+
+                # Render first column traits
+                with trait_col1:
+                    for trait in assessments[:mid_point]:
+                        if trait['level'] != 'NOT OBSERVED':
+                            st.markdown(render_trait_bar(trait), unsafe_allow_html=True)
+
+                # Render second column traits
+                with trait_col2:
+                    for trait in assessments[mid_point:]:
+                        if trait['level'] != 'NOT OBSERVED':
+                            st.markdown(render_trait_bar(trait), unsafe_allow_html=True)
+
+                # Display summary if available
+                if assessment_data['assessment'].get('summary'):
+                    st.markdown("---")
+                    st.subheader("📝 Summary")
+                    st.info(assessment_data['assessment']['summary'])
+
+                st.markdown('</div>', unsafe_allow_html=True)
+
+        except Exception as e:
+            st.error(f"Error loading assessment: {str(e)}")
 
 def export_template_tab():
     st.header("📁 Export Reference Sheet Template")
