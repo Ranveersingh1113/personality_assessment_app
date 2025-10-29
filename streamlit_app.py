@@ -280,84 +280,128 @@ def batch_assessment_tab():
         render_review_interface()
 
 def student_dashboard_tab():
-    """Display the student personality dashboard (shows all 20 qualities)."""
+    """Display the student personality dashboard (complete, self-contained)."""
+    import base64
+    import streamlit.components.v1 as components
+
+    # CSS for trait bars (global dark theme is applied in main())
     st.markdown("""
     <style>
-        /* Trait bars */
-        .trait-bar {
-            margin-bottom: 12px;
-        }
-        .trait-bar .label {
-            font-size: 14px;
-            margin-bottom: 6px;
-        }
-        .bar {
-            height: 18px;
-            border-radius: 9px;
-        }
-        .bar-high { background-color: rgba(92, 184, 92, 0.9); }
-        .bar-middle { background-color: rgba(240, 173, 78, 0.9); }
-        .bar-low { background-color: rgba(217, 83, 79, 0.9); }
-        .bar-na { background-color: rgba(224, 224, 224, 0.3); }
+        .trait-bar { margin-bottom: 12px; }
+        .trait-bar .label { font-size: 14px; margin-bottom: 6px; color: #E0E0E0; }
+        .bar { height: 18px; border-radius: 9px; }
+        .bar-high { background-color: rgba(92, 184, 92, 0.95); }
+        .bar-middle { background-color: rgba(240, 173, 78, 0.95); }
+        .bar-low { background-color: rgba(217, 83, 79, 0.95); }
+        .bar-na { background-color: rgba(224, 224, 224, 0.2); }
+        .profile-card, .report-card { padding: 16px; border-radius: 12px; }
     </style>
     """, unsafe_allow_html=True)
-    
-    # Helper: build SWOT and summary text from 20 traits
+
+    # --- load assessment files safely ---
+    try:
+        assessment_files = []
+        if os.path.exists("assessments"):
+            assessment_files = [
+                f for f in os.listdir("assessments")
+                if f.endswith(".json") and not f.startswith("batch_")
+            ]
+    except Exception as e:
+        st.error(f"Error loading assessment files: {e}")
+        return
+
+    if not assessment_files:
+        st.info("No student assessments available. Complete an individual or batch assessment first.")
+        return
+
+    # --- helpers ---
+# ...existing code...
     def build_swot_and_summary(student_name, traits_list):
-        # Create PDF
+        """Return (pdf_bytes, preview_text). Ensure text is Latin-1-safe for FPDF."""
+        import unicodedata
+
+        def safe_text(s: str) -> str:
+            if s is None:
+                return ""
+            s = str(s)
+            # normalize and replace common bullets with ASCII dash
+            s = s.replace("•", "-").replace("–", "-").replace("—", "-")
+            s = unicodedata.normalize("NFKD", s)
+            # encode/decode to latin-1 with replacement to ensure FPDF accepts it
+            return s.encode("latin-1", "replace").decode("latin-1")
+
         pdf = FPDF()
+        pdf.set_auto_page_break(auto=True, margin=12)
         pdf.add_page()
-        
-        # PDF Styling
-        pdf.set_font('Arial', 'B', 16)
-        pdf.cell(0, 10, f'SWOT Analysis Report - {student_name}', ln=True)
-        pdf.line(10, 30, 200, 30)
-        
-        pdf.set_font('Arial', 'B', 12)
-        pdf.ln(10)
-        
-        # Categorize traits
-        strengths = [t for t in traits_list if t['level'] == 'HIGH']
-        weaknesses = [t for t in traits_list if t['level'] == 'LOW']
-        middles = [t for t in traits_list if t['level'] == 'MIDDLE']
-        
-        # Add SWOT sections
-        sections = [
-            ("Strengths", strengths, "These are areas where the student excels:"),
-            ("Weaknesses", weaknesses, "These areas need improvement:"),
-            ("Opportunities", middles, "These areas show potential for growth:"),
-        ]
-        
-        for title, traits, intro in sections:
-            pdf.set_font('Arial', 'B', 12)
-            pdf.cell(0, 10, title, ln=True)
-            pdf.set_font('Arial', '', 10)
-            pdf.multi_cell(0, 5, intro)
-            for t in traits:
-                pdf.cell(0, 8, f"• {t['quality']}", ln=True)
-            pdf.ln(5)
-        
-        # Summary section
-        pdf.set_font('Arial', 'B', 12)
-        pdf.cell(0, 10, 'Overall Summary', ln=True)
-        pdf.set_font('Arial', '', 10)
-        summary = (f"Assessment shows {len(strengths)} strengths, "
-                  f"{len(middles)} areas with potential, and "
-                  f"{len(weaknesses)} areas needing attention.")
-        pdf.multi_cell(0, 5, summary)
-        
-        # Return both PDF bytes and text preview
-        return pdf.output(dest='S').encode('latin-1'), summary
+        pdf.set_font("Arial", "B", 14)
+        pdf.cell(0, 8, safe_text(f"SWOT Analysis Report - {student_name}"), ln=True)
+        pdf.ln(4)
+        pdf.set_font("Arial", "", 11)
+
+        strengths = [t for t in traits_list if t["level"] == "HIGH"]
+        weaknesses = [t for t in traits_list if t["level"] == "LOW"]
+        middles = [t for t in traits_list if t["level"] == "MIDDLE"]
+        not_obs = [t for t in traits_list if t["level"] == "NOT OBSERVED"]
+
+        def write_section(title, items, intro=None):
+            pdf.set_font("Arial", "B", 12)
+            pdf.cell(0, 7, safe_text(title), ln=True)
+            pdf.set_font("Arial", "", 10)
+            if intro:
+                pdf.multi_cell(0, 5, safe_text(intro))
+            if items:
+                for it in items:
+                    pdf.multi_cell(0, 5, safe_text(f"- {it['quality']}"))
+            else:
+                pdf.multi_cell(0, 5, safe_text("- None identified."))
+            pdf.ln(2)
+
+        write_section("Strengths", strengths, "Areas where the student shows strength:")
+        write_section("Weaknesses", weaknesses, "Areas to support and improve:")
+        write_section("Opportunities", middles, "Moderate qualities that can be developed further:")
+        if not_obs:
+            write_section("Not Observed", not_obs, "Traits not observed in the session:")
+
+        pdf.set_font("Arial", "B", 12)
+        pdf.cell(0, 7, safe_text("Summary of 20 Personality Traits"), ln=True)
+        pdf.set_font("Arial", "", 10)
+        for t in traits_list:
+            pdf.multi_cell(0, 5, safe_text(f"- {t['quality']}: {t['level']}"))
+        pdf.ln(3)
+
+        pdf.set_font("Arial", "B", 12)
+        pdf.cell(0, 7, safe_text("Overall Summary"), ln=True)
+        pdf.set_font("Arial", "", 10)
+        summary = (f"The assessment shows {len(strengths)} strength(s), {len(middles)} mid-range quality(ies), "
+                   f"and {len(weaknesses)} area(s) needing attention among the 20 traits.")
+        pdf.multi_cell(0, 5, safe_text(summary))
+
+        out = pdf.output(dest="S")
+        pdf_bytes = out.encode("latin-1") if isinstance(out, str) else out
+
+        # readable preview text (also safe)
+        preview_lines = [safe_text(f"SWOT Preview for {student_name}"), "", safe_text(summary), ""]
+        preview_lines += ["Strengths:"] + ([safe_text(f"- {s['quality']}") for s in strengths] or ["- None"])
+        preview_lines += ["", "Weaknesses:"] + ([safe_text(f"- {w['quality']}") for w in weaknesses] or ["- None"])
+        preview_text = "\n".join(preview_lines)
+        return pdf_bytes, preview_text
+# ...existing code...
+
+    def embed_pdf_bytes(pdf_bytes, height=480):
+        """Embed PDF bytes as base64 iframe for preview (best-effort)."""
+        try:
+            b64 = base64.b64encode(pdf_bytes).decode("utf-8")
+            html = f'<iframe src="data:application/pdf;base64,{b64}" width="100%" height="{height}px" style="border: none;"></iframe>'
+            components.html(html, height=height + 20)
+        except Exception:
+            st.warning("PDF preview not available in this environment. Use the download button.")
 
     def generate_and_offer_report(student_name, traits, selected_file):
         try:
             pdf_bytes, preview_text = build_swot_and_summary(student_name, traits)
-            
-            # Show preview
             with st.expander("📄 Report Preview", expanded=True):
                 st.text(preview_text)
-            
-            # Offer download
+                embed_pdf_bytes(pdf_bytes, height=420)
             st.download_button(
                 label="⬇️ Download SWOT Report (PDF)",
                 data=pdf_bytes,
@@ -365,43 +409,31 @@ def student_dashboard_tab():
                 mime="application/pdf",
                 key=f"download_report_{selected_file}"
             )
-            
-            # Store in session state
-            st.session_state[f"report_{selected_file}"] = {
-                'pdf': pdf_bytes,
-                'preview': preview_text
-            }
-            
+            st.session_state[f"report_{selected_file}"] = {"pdf": pdf_bytes, "preview": preview_text}
         except Exception as e:
-            st.error(f"Error generating report: {str(e)}")
+            st.error(f"Error generating report: {e}")
 
-    # Student selector
+    # --- UI: select student ---
     st.subheader("👤 Select Student")
     selected_file = st.selectbox(
         "Choose a student assessment",
         options=assessment_files,
         format_func=lambda x: x.split('_')[0].replace('_', ' ').title()
     )
-
     if not selected_file:
         return
 
+    # load selected assessment
     try:
-        with open(f"assessments/{selected_file}", "r", encoding="utf-8") as f:
+        with open(os.path.join("assessments", selected_file), "r", encoding="utf-8") as f:
             assessment_data = json.load(f)
     except Exception as e:
-        st.error(f"Error reading assessment file: {str(e)}")
+        st.error(f"Error reading assessment file: {e}")
         return
 
-    # Normalize assessments into a lookup by quality (case-insensitive)
-    raw_assessments = assessment_data.get('assessment', {}).get('assessments', []) or []
-    lookup = {}
-    for a in raw_assessments:
-        q = str(a.get('quality', '')).strip().lower()
-        if q:
-            lookup[q] = a
-
-    # Full ordered list of 20 qualities (matches README / design)
+    # normalize and ensure 20 traits
+    raw_assessments = assessment_data.get("assessment", {}).get("assessments", []) or []
+    lookup = {str(a.get("quality", "")).strip().lower(): a for a in raw_assessments if a.get("quality")}
     qualities_order = [
         "Adaptability", "Academic achievement", "Boldness", "Competition",
         "Creativity", "Enthusiasm", "Excitability", "General ability",
@@ -409,52 +441,34 @@ def student_dashboard_tab():
         "Maturity", "Mental health", "Morality", "Self control",
         "Sensitivity", "Self sufficiency", "Social warmth", "Tension"
     ]
-
-    # Build traits list (ensures all 20 are present)
     traits = []
     for q in qualities_order:
         key = q.strip().lower()
         item = lookup.get(key)
-        if item:
-            level = item.get('level', 'NOT OBSERVED')
+        level = item.get("level", "NOT OBSERVED") if item else "NOT OBSERVED"
+        if level == "HIGH":
+            width, cls = 80, "high"
+        elif level == "MIDDLE":
+            width, cls = 55, "middle"
+        elif level == "LOW":
+            width, cls = 30, "low"
         else:
-            level = 'NOT OBSERVED'
-        # Map levels to width & class
-        if level == 'HIGH':
-            width = 80
-            cls = 'high'
-        elif level == 'MIDDLE':
-            width = 55
-            cls = 'middle'
-        elif level == 'LOW':
-            width = 30
-            cls = 'low'
-        else:
-            width = 6
-            cls = 'na'
-        traits.append({'quality': q, 'level': level, 'width': width, 'cls': cls})
+            width, cls = 6, "na"
+        traits.append({"quality": q, "level": level, "width": width, "cls": cls})
 
-    # Layout: profile (1) and report (3)
+    # --- Layout & rendering ---
     profile_col, report_col = st.columns([1, 3])
 
-    # Profile Card
     with profile_col:
-        student_name = assessment_data.get('student_name', selected_file.split('_')[0].replace('_', ' ').title())
-        timestamp = assessment_data.get('timestamp', '')
-        date_str = ""
+        student_name = assessment_data.get("student_name", selected_file.split('_')[0].replace('_', ' ').title())
+        timestamp = assessment_data.get("timestamp", "")
         try:
-            if timestamp:
-                # support ISO and simple formats
-                try:
-                    date_str = datetime.fromisoformat(timestamp).strftime('%d / %m / %Y')
-                except Exception:
-                    date_str = timestamp.split('T')[0]
+            date_str = datetime.fromisoformat(timestamp).strftime("%d / %m / %Y") if timestamp else ""
         except Exception:
-            date_str = ""
-
+            date_str = (timestamp.split("T")[0] if timestamp else "")
         st.markdown(f"""
             <div class="profile-card">
-                <div style="font-size:20px;font-weight:600;margin-bottom:20px;color:#E0E0E0;">{student_name}</div>
+                <div style="font-size:20px;font-weight:600;margin-bottom:12px;color:#E0E0E0;">{student_name}</div>
                 <div style="text-align:left;color:#E0E0E0;">
                     <div><strong>Class:</strong> 7th</div>
                     <div><strong>Section:</strong> B</div>
@@ -464,26 +478,19 @@ def student_dashboard_tab():
             </div>
         """, unsafe_allow_html=True)
 
-    # Report Card
     with report_col:
-        # Header - last observation date and Generate button
         last_obs_display = date_str or "15 / 10 / 2025"
         hcol1, hcol2 = st.columns([3, 1])
         with hcol1:
-            st.markdown(f"<div style='padding:6px 0;color:#fff;' class='date'>Last Observation Date: {last_obs_display}</div>", unsafe_allow_html=True)
+            st.markdown(f"<div style='padding:6px 0;color:#E0E0E0;' class='date'>Last Observation Date: {last_obs_display}</div>", unsafe_allow_html=True)
         with hcol2:
             if st.button("Generate Report ➡️", key=f"gen_report_{selected_file}"):
-                report_text = build_swot_and_summary(student_name, traits)
-                # store in session for persistence per selected file
-                st.session_state[f"report_{selected_file}"] = report_text
-                generate_and_offer_report(student_name, report_text, selected_file)
+                generate_and_offer_report(student_name, traits, selected_file)
 
         st.markdown('<div class="report-card">', unsafe_allow_html=True)
         st.subheader("Latest Observation Record")
 
-        # Two columns for 20 traits (10 each)
         col1, col2 = st.columns(2)
-
         def render_trait_bar_html(quality, cls, width):
             return f"""
                 <div class="trait-bar">
@@ -491,44 +498,37 @@ def student_dashboard_tab():
                     <div class="bar bar-{cls}" style="width: {width}%;"></div>
                 </div>
             """
-
-        # Render first 10 in left column
         with col1:
             for t in traits[:10]:
-                st.markdown(render_trait_bar_html(t['quality'], t['cls'], t['width']), unsafe_allow_html=True)
-
-        # Render last 10 in right column
+                st.markdown(render_trait_bar_html(t["quality"], t["cls"], t["width"]), unsafe_allow_html=True)
         with col2:
             for t in traits[10:]:
-                st.markdown(render_trait_bar_html(t['quality'], t['cls'], t['width']), unsafe_allow_html=True)
+                st.markdown(render_trait_bar_html(t["quality"], t["cls"], t["width"]), unsafe_allow_html=True)
 
-        # Optional summary
-        summary = assessment_data.get('assessment', {}).get('summary') or ""
-        if summary:
+        summary_text = assessment_data.get("assessment", {}).get("summary") or ""
+        if summary_text:
             st.markdown("---")
             st.subheader("📝 Summary")
-            st.info(summary)
+            st.info(summary_text)
 
-        # When Generate Report button is clicked:
-    if st.button("Generate Report ➡️", key=f"gen_report_{selected_file}"):
-        generate_and_offer_report(student_name, traits, selected_file)
-
-    # Show previously generated report if it exists
+    # show previously generated report if present
     saved_key = f"report_{selected_file}"
     if saved_key in st.session_state:
         st.markdown("---")
         st.subheader("📄 Previously Generated Report")
         with st.expander("Show Preview", expanded=False):
-            st.text(st.session_state[saved_key]['preview'])
+            st.text(st.session_state[saved_key]["preview"])
+            try:
+                embed_pdf_bytes(st.session_state[saved_key]["pdf"], height=420)
+            except Exception:
+                pass
         st.download_button(
             label="⬇️ Download Previous Report (PDF)",
-            data=st.session_state[saved_key]['pdf'],
+            data=st.session_state[saved_key]["pdf"],
             file_name=f"{student_name.replace(' ', '_')}_SWOT.pdf",
             mime="application/pdf",
             key=f"dl_prev_{selected_file}"
         )
-
-        st.markdown('</div>', unsafe_allow_html=True)
 # ...existing code...
 
 def export_template_tab():
