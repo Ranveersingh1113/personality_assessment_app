@@ -5,6 +5,7 @@ import os
 from datetime import datetime
 from personality_assessment import PersonalityAssessmentSystem
 from csv_reference_processor import CSVReferenceProcessor
+from fpdf import FPDF
 
 # Page configuration
 st.set_page_config(
@@ -303,100 +304,76 @@ def student_dashboard_tab():
     
     # Helper: build SWOT and summary text from 20 traits
     def build_swot_and_summary(student_name, traits_list):
-        # traits_list: [{'quality':..., 'level':..., 'width':..., 'cls':...}, ...]
+        # Create PDF
+        pdf = FPDF()
+        pdf.add_page()
+        
+        # PDF Styling
+        pdf.set_font('Arial', 'B', 16)
+        pdf.cell(0, 10, f'SWOT Analysis Report - {student_name}', ln=True)
+        pdf.line(10, 30, 200, 30)
+        
+        pdf.set_font('Arial', 'B', 12)
+        pdf.ln(10)
+        
+        # Categorize traits
         strengths = [t for t in traits_list if t['level'] == 'HIGH']
         weaknesses = [t for t in traits_list if t['level'] == 'LOW']
         middles = [t for t in traits_list if t['level'] == 'MIDDLE']
-        not_obs = [t for t in traits_list if t['level'] == 'NOT OBSERVED']
+        
+        # Add SWOT sections
+        sections = [
+            ("Strengths", strengths, "These are areas where the student excels:"),
+            ("Weaknesses", weaknesses, "These areas need improvement:"),
+            ("Opportunities", middles, "These areas show potential for growth:"),
+        ]
+        
+        for title, traits, intro in sections:
+            pdf.set_font('Arial', 'B', 12)
+            pdf.cell(0, 10, title, ln=True)
+            pdf.set_font('Arial', '', 10)
+            pdf.multi_cell(0, 5, intro)
+            for t in traits:
+                pdf.cell(0, 8, f"• {t['quality']}", ln=True)
+            pdf.ln(5)
+        
+        # Summary section
+        pdf.set_font('Arial', 'B', 12)
+        pdf.cell(0, 10, 'Overall Summary', ln=True)
+        pdf.set_font('Arial', '', 10)
+        summary = (f"Assessment shows {len(strengths)} strengths, "
+                  f"{len(middles)} areas with potential, and "
+                  f"{len(weaknesses)} areas needing attention.")
+        pdf.multi_cell(0, 5, summary)
+        
+        # Return both PDF bytes and text preview
+        return pdf.output(dest='S').encode('latin-1'), summary
 
-        # Build simple sentences for each category
-        lines = []
-        lines.append(f"SWOT Report for {student_name}")
-        lines.append("=" * (10 + len(student_name)))
-        lines.append("")
-
-        # Strengths
-        lines.append("Strengths:")
-        if strengths:
-            for s in strengths:
-                lines.append(f"- {s['quality']}: Student demonstrates strength in {s['quality'].lower()}, which can be leveraged in group activities and leadership roles.")
-        else:
-            lines.append("- No clear high-rated qualities identified.")
-
-        lines.append("")
-
-        # Weaknesses
-        lines.append("Weaknesses:")
-        if weaknesses:
-            for w in weaknesses:
-                lines.append(f"- {w['quality']}: Shows limited evidence of {w['quality'].lower()}; consider targeted support and practice.")
-        else:
-            lines.append("- No prominent low-rated qualities identified.")
-
-        lines.append("")
-
-        # Opportunities (Middle)
-        lines.append("Opportunities (can be improved):")
-        if middles:
-            for m in middles:
-                lines.append(f"- {m['quality']}: Has moderate evidence for {m['quality'].lower()}; with encouragement and focused activities this can improve.")
-        else:
-            lines.append("- No moderate-rated qualities identified.")
-
-        lines.append("")
-
-        # Not Observed
-        if not_obs:
-            lines.append("Not Observed:")
-            for n in not_obs:
-                lines.append(f"- {n['quality']}: Not observed in the session; collect more observations to evaluate.")
-            lines.append("")
-
-        # Summary of all 20 traits
-        lines.append("Summary of 20 Personality Traits:")
-        for t in traits_list:
-            lines.append(f"- {t['quality']}: {t['level']}")
-
-        # Short overall summary paragraph
-        high_count = len(strengths)
-        low_count = len(weaknesses)
-        mid_count = len(middles)
-        lines.append("")
-        lines.append("Overall Summary:")
-        lines.append(f"The assessment shows {high_count} strength(s), {mid_count} mid-range quality(ies) and {low_count} area(s) needing attention among the 20 traits. Use strengths to build confidence and target the low and middle areas with specific activities and supports.")
-
-        content = "\n".join(lines)
-        return content
-
-    def generate_and_offer_report(student_name, report_text, selected_file):
-        # show report in UI
-        with st.expander("📄 Generated SWOT & Summary (preview)", expanded=True):
-            st.code(report_text)
-
-        # provide download
-        b = report_text.encode("utf-8")
-        btn_key = f"download_report_{selected_file}"
-        st.download_button(
-            label="⬇️ Download SWOT Report (PDF file)",
-            data=b,
-            file_name=f"{student_name.replace(' ', '_')}_SWOT.pdf",
-            mime="application/pdf",
-            key=btn_key
-        )
-
-    # Ensure assessments folder exists
-    try:
-        assessment_files = []
-        if os.path.exists("assessments"):
-            assessment_files = [f for f in os.listdir("assessments")
-                                if f.endswith('.json') and not f.startswith('batch_')]
-    except Exception as e:
-        st.error(f"Error loading assessments: {str(e)}")
-        return
-
-    if not assessment_files:
-        st.info("No student assessments available. Complete an individual or batch assessment first.")
-        return
+    def generate_and_offer_report(student_name, traits, selected_file):
+        try:
+            pdf_bytes, preview_text = build_swot_and_summary(student_name, traits)
+            
+            # Show preview
+            with st.expander("📄 Report Preview", expanded=True):
+                st.text(preview_text)
+            
+            # Offer download
+            st.download_button(
+                label="⬇️ Download SWOT Report (PDF)",
+                data=pdf_bytes,
+                file_name=f"{student_name.replace(' ', '_')}_SWOT.pdf",
+                mime="application/pdf",
+                key=f"download_report_{selected_file}"
+            )
+            
+            # Store in session state
+            st.session_state[f"report_{selected_file}"] = {
+                'pdf': pdf_bytes,
+                'preview': preview_text
+            }
+            
+        except Exception as e:
+            st.error(f"Error generating report: {str(e)}")
 
     # Student selector
     st.subheader("👤 Select Student")
@@ -477,9 +454,8 @@ def student_dashboard_tab():
 
         st.markdown(f"""
             <div class="profile-card">
-                <img src="https://via.placeholder.com/150" style="width:130px;height:130px;border-radius:50%;margin-bottom:12px;">
-                <div style="font-size:20px;font-weight:600;margin-bottom:8px;color:#111;">{student_name}</div>
-                <div style="text-align:left;color:#111;">
+                <div style="font-size:20px;font-weight:600;margin-bottom:20px;color:#E0E0E0;">{student_name}</div>
+                <div style="text-align:left;color:#E0E0E0;">
                     <div><strong>Class:</strong> 7th</div>
                     <div><strong>Section:</strong> B</div>
                     <div><strong>School:</strong> Vikram School</div>
@@ -533,19 +509,24 @@ def student_dashboard_tab():
             st.subheader("📝 Summary")
             st.info(summary)
 
-        # If a report was already generated earlier, show & allow download
-        saved_key = f"report_{selected_file}"
-        if saved_key in st.session_state:
-            st.markdown("---")
-            st.subheader("📄 Generated SWOT & Summary")
-            st.code(st.session_state[saved_key])
-            st.download_button(
-                label="⬇️ Download Previously Generated SWOT Report (PDF)",
-                data=st.session_state[saved_key].encode("utf-8"),
-                file_name=f"{student_name.replace(' ', '_')}_SWOT.pdf",
-                mime="application/pdf",
-                key=f"dl_prev_{selected_file}"
-            )
+        # When Generate Report button is clicked:
+    if st.button("Generate Report ➡️", key=f"gen_report_{selected_file}"):
+        generate_and_offer_report(student_name, traits, selected_file)
+
+    # Show previously generated report if it exists
+    saved_key = f"report_{selected_file}"
+    if saved_key in st.session_state:
+        st.markdown("---")
+        st.subheader("📄 Previously Generated Report")
+        with st.expander("Show Preview", expanded=False):
+            st.text(st.session_state[saved_key]['preview'])
+        st.download_button(
+            label="⬇️ Download Previous Report (PDF)",
+            data=st.session_state[saved_key]['pdf'],
+            file_name=f"{student_name.replace(' ', '_')}_SWOT.pdf",
+            mime="application/pdf",
+            key=f"dl_prev_{selected_file}"
+        )
 
         st.markdown('</div>', unsafe_allow_html=True)
 # ...existing code...
