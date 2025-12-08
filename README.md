@@ -4,39 +4,51 @@ A multi-agent RAG + LLM pipeline designed to assess personality traits of rural 
 
 ## 🌟 Features
 
+### Core Assessment
 - **Multi-Agent RAG Pipeline**: Combines vector database search with LLM analysis
-- **20 Personality Qualities**: Comprehensive assessment framework
+- **20 Personality Qualities**: Comprehensive assessment framework based on NGO observation data
 - **Individual & Batch Assessment**: Process single students or multiple students at once
-- **Persistent Data Storage**: Structured CSV storage with student names and date-based columns
-- **Duplicate Assessment Handling**: Smart detection and user choice for same-day assessments
-- **Streamlit Interface**: Clean, simple web interface with 5 main tabs
+- **Review Interface**: Approve and edit predicted labels before finalizing
+
+### Storage & Organization
+- **Structured File Naming**: Batch assessments saved as `schoolname_class_date.csv`
+- **Smart Filtering**: Browse stored assessments by School → Class → Date hierarchy
+- **CSV-Only Storage**: All data stored in portable CSV format
+
+### Report Generation
+- **SWOT Analysis**: Generate Strengths, Weaknesses, Opportunities, Threats analysis
+- **Marathi Support**: SWOT analysis available in Marathi for local use
+- **Report Cards**: Generate Excel-based report cards with SWOT data
+
+### System Features
+- **Rate Limiting**: Built-in API rate limiting to prevent quota exceeded errors
+- **Streamlit Interface**: Clean, simple web interface with organized tabs
 - **PDF Integration**: Uses map-t.pdf for quality definitions
-- **Reference Sheet Support**: Uses actual NGO observation data from CSV
-- **Export Capabilities**: Download results in JSON and CSV formats
-- **Assessment History**: View and manage all stored assessments over time
 
 ## 🎯 The 20 Personality Qualities
 
-1. **Adaptability** - Ability to adjust to new situations
-2. **Academic achievement** - Performance in academic tasks
-3. **Boldness** - Confidence and courage in new situations
-4. **Competition** - Drive to compete and win
-5. **Creativity** - Imagination and innovative thinking
-6. **Enthusiasm** - Energy and interest in activities
-7. **Excitability** - Emotional responsiveness
-8. **General ability** - Overall cognitive skills
-9. **Guilt proneness** - Sense of responsibility and remorse
-10. **Individualism** - Independent thinking and action
-11. **Innovation** - Openness to new methods and approaches
-12. **Leadership** - Ability to guide and influence others
-13. **Maturity** - Emotional and behavioral maturity
-14. **Mental health** - Emotional stability and stress management
-15. **Morality** - Ethical judgment and integrity
-16. **Self control** - Discipline and impulse control
-17. **Sensitivity** - Emotional awareness and empathy
-18. **Self sufficiency** - Independence and self-reliance
-19. **Social warmth** - Friendliness and social interaction
-20. **Tension** - Stress levels and anxiety
+| # | Quality | Description |
+|---|---------|-------------|
+| 1 | Adaptability | Ability to adjust to new situations |
+| 2 | Academic Achievement | Performance in academic tasks |
+| 3 | Boldness | Confidence and courage in new situations |
+| 4 | Competition | Drive to compete and win |
+| 5 | Creativity | Imagination and innovative thinking |
+| 6 | Enthusiasm | Energy and interest in activities |
+| 7 | Excitability | Emotional responsiveness |
+| 8 | General Ability | Overall cognitive skills |
+| 9 | Guilt Proneness | Sense of responsibility and remorse |
+| 10 | Individualism | Independent thinking and action |
+| 11 | Innovation | Openness to new methods and approaches |
+| 12 | Leadership | Ability to guide and influence others |
+| 13 | Maturity | Emotional and behavioral maturity |
+| 14 | Mental Health | Emotional stability and stress management |
+| 15 | Morality | Ethical judgment and integrity |
+| 16 | Self Control | Discipline and impulse control |
+| 17 | Sensitivity | Emotional awareness and empathy |
+| 18 | Self Sufficiency | Independence and self-reliance |
+| 19 | Social Warmth | Friendliness and social interaction |
+| 20 | Tension | Stress levels and anxiety |
 
 ## 🚀 Quick Start
 
@@ -44,225 +56,161 @@ A multi-agent RAG + LLM pipeline designed to assess personality traits of rural 
 
 - Python 3.8 or higher
 - Google API key (for Gemini)
-- map-t.pdf file (quality definitions)
+- `map-t.pdf` file (quality definitions)
 
 ### Installation
 
 1. **Clone or download the project files**
-2. **Install dependencies:**
+
+2. **Create virtual environment (recommended):**
+   ```bash
+   python -m venv venv
+   venv\Scripts\activate  # Windows
+   ```
+
+3. **Install dependencies:**
    ```bash
    pip install -r requirements.txt
    ```
 
-3. **Set up your Google API key:**
+4. **Set up your Google API key:**
    - Create a `.env` file in the project directory
    - Add: `GOOGLE_API_KEY=your_api_key_here`
-   - Or enter it directly in the Streamlit app
+   - Or enter it directly in the Streamlit app sidebar
 
 ### Running the Application
 
-#### Option 1: Using the batch file (Windows)
-Double-click `run_app.bat`
+**Windows:** Double-click `run_app.bat`
 
-#### Option 2: Manual command
+**Manual:**
 ```bash
 streamlit run frontend/streamlit_app.py
 ```
 
-The application will open at `http://localhost:8501`
+The application opens at `http://localhost:8501`
 
 ## 📱 Using the Application
 
-### 1. System Setup
-- Enter your Google API key in the sidebar
-- Click "Initialize System" to set up the vector database
-- Wait for the system to load reference data
+### Tab 1: Individual Assessment
+1. Enter **School Name** and **Class**
+2. Enter **Student Name** and **Observer Notes**
+3. Click "Assess Personality" to get results
+4. View detailed breakdown by quality level
+5. Results are saved as `studentname_schoolname_date.csv`
 
-### 2. Individual Assessment
-- Go to the "Individual Assessment" tab
-- Enter student name and observer notes
-- Click "Assess Personality" to get results
-- View detailed breakdown by quality level
-- **Automatic Storage**: Results are automatically saved to the storage system
-- **Duplicate Handling**: If student already has assessment on same date, choose to replace, append, or cancel
+### Tab 2: Batch Assessment
+1. Enter **School Name** and **Class** (required)
+2. Upload a CSV file with columns: `Name`, `Observations`
+3. Click "Start Batch Assessment"
+4. Review predicted labels in the data editor
+5. Tick "Approved" checkbox for each row
+6. Click "Finalize & Download CSV"
+7. Results saved as `schoolname_class_date.csv`
 
-### 3. Batch Assessment
-- Go to the "Batch Assessment" tab
-- Upload a CSV file with columns: Name, Observations
-- Or use manual entry for multiple students
-- Process all students at once
-- Review and approve results before finalizing
-- **Auto-Storage**: Approved assessments are stored in the main system
+### Tab 3: Stored Assessments
+1. View summary: total schools, classes, and files
+2. **Filter by School** → **Class** → **Date**
+3. View and download stored assessment data
 
-### 4. Stored Assessments (NEW!)
-- Go to the "Stored Assessments" tab
-- View summary statistics (total students, dates, assessments)
-- Select individual students to view their assessment history
-- Export all data to CSV format
-- View raw data table for detailed analysis
-
-### 5. Export Template
-- Download the CSV template for reference sheet
-- Fill in your observations for each quality level
-- Import to Google Sheets for team collaboration
+### Tab 4: SWOT & Report Cards
+1. **Individual Analysis**: Generate SWOT in English or Marathi
+2. **Batch Analysis**: Upload CSV for multiple students
+3. **Report Cards**: Generate Excel report cards with Marathi SWOT
 
 ## 📊 Assessment Output
 
-The system provides assessments in four categories:
+| Level | Icon | Description |
+|-------|------|-------------|
+| HIGH | 🟢 | Student clearly demonstrates this quality |
+| MIDDLE | 🟡 | Student shows moderate evidence |
+| LOW | 🔴 | Student shows limited evidence |
+| NOT OBSERVED | ⚪ | Insufficient evidence |
 
-- **HIGH** 🟢 - Student clearly demonstrates this quality
-- **MIDDLE** 🟡 - Student shows moderate evidence
-- **LOW** 🔴 - Student shows limited evidence  
-- **NOT OBSERVED** ⚪ - Insufficient evidence (no hallucination)
-
-## 📁 File Structure
+## 📁 Project Structure
 
 ```
 service learning/
 ├── frontend/
-│   └── streamlit_app.py     # Main Streamlit application
+│   └── streamlit_app.py           # Main Streamlit application
 ├── ai_core/
-│   ├── personality_assessment.py      # Core assessment engine
-│   ├── csv_reference_processor.py    # CSV reference data processor
-│   └── assessment_storage_manager.py # NEW: Data storage management
+│   ├── __init__.py
+│   ├── personality_assessment.py   # Core assessment + SWOT engine
+│   ├── csv_reference_processor.py  # Reference data processor
+│   ├── assessment_storage_manager.py # Data storage management
+│   └── report_card_generator.py    # Excel report card generator
 ├── backend/
-│   └── rate_limiter.py      # Rate limiting functionality
-├── assessments/             # Generated assessment files
-│   ├── *.json              # Individual assessment results
-│   ├── *.csv               # Batch assessment results
-│   └── student_assessments.csv # NEW: Main storage file
-├── map-t.pdf                # Quality definitions (you provide)
-├── Obseervations check list for feeding.1.xlsx - observation check list 1.csv # NGO reference data
-├── requirements.txt          # Python dependencies
-├── run_app.py               # Startup script
-├── run_app.bat              # Windows startup script
-└── README.md                # This file
+│   ├── __init__.py
+│   └── rate_limiter.py             # API rate limiting
+├── assessments/                    # Generated assessment files
+│   └── [school]_[class]_[date].csv # Batch assessment results
+├── config.py                       # Configuration settings
+├── requirements.txt                # Python dependencies
+├── run_app.bat                     # Windows startup script
+├── map-t.pdf                       # Quality definitions (required)
+├── report_card_template.xlsx       # Report card Excel template
+├── reference_sheet_template.csv    # Template for observations
+├── Observations...csv              # NGO reference data
+└── README.md                       # This file
 ```
 
 ## 🔧 Technical Details
 
 ### Architecture
-- **Vector Database**: ChromaDB with Hugging Face embeddings (All-MiniLM-L6-v2)
-- **LLM**: Google Gemini 1.5 Flash for personality analysis (optimized for rate limits)
+- **Vector Database**: ChromaDB with HuggingFace embeddings (All-MiniLM-L6-v2)
+- **LLM**: Google Gemini 1.5 Flash (optimized for rate limits)
 - **RAG Pipeline**: Retrieves relevant context from PDF and CSV reference data
-- **Rate Limiting**: Built-in rate limiting to prevent quota exceeded errors
-- **Multi-Agent**: Specialized prompts for different assessment aspects
+- **Rate Limiting**: Built-in delays and retry logic
 
 ### Data Flow
-1. Observer notes are input to the system
-2. Vector database searches for relevant quality definitions
-3. LLM analyzes observations against reference data
-4. System outputs structured assessment with reasoning
-5. **NEW**: Duplicate check for same-day assessments
-6. **NEW**: User choice for handling duplicates (replace/append/cancel)
-7. **NEW**: Results are stored in structured CSV format
-8. Results can be exported and viewed in the Stored Assessments tab
+```mermaid
+flowchart LR
+    A[Observer Notes] --> B[Vector Search]
+    B --> C[Retrieve Quality Definitions]
+    C --> D[LLM Analysis]
+    D --> E[Structured Assessment]
+    E --> F[Review Interface]
+    F --> G[CSV Storage]
+```
 
-## 📈 Performance
-
+### Performance
 - **Individual Assessment**: ~30-60 seconds per student
-- **Batch Processing**: Processes multiple students sequentially
+- **Batch Processing**: Sequential processing with progress bar
 - **Vector Database**: Fast semantic search across reference materials
-- **Memory Usage**: Efficient chunking and retrieval
 
-## 🚦 Rate Limiting & Quota Management
+## 🚦 Rate Limiting
 
-The system includes built-in rate limiting to prevent quota exceeded errors:
+The system includes built-in rate limiting:
 
-### Rate Limits
-- **Per Minute**: 15 requests (configurable)
-- **Per Day**: 1000 requests (configurable)
-- **Delay Between Calls**: 2 seconds (configurable)
+| Limit | Default |
+|-------|---------|
+| Per Minute | 15 requests |
+| Per Day | 1000 requests |
+| Delay Between Calls | 2 seconds |
 
-### Features
-- **Automatic Retry**: Retries failed requests with exponential backoff
-- **Status Monitoring**: Real-time rate limit status in the sidebar
-- **Smart Delays**: Automatically waits when approaching limits
-- **Error Handling**: Clear error messages for quota issues
-
-### Tips for Free Tier Users
+**Tips for Free Tier:**
 - Wait 1-2 minutes between assessments
 - Use batch processing for multiple students
-- Monitor the rate limiting status in the sidebar
-- Consider upgrading to a paid plan for higher limits
+- Monitor rate limit status in sidebar
 
 ## 🛠️ Customization
 
 ### Adding New Qualities
-Edit the `qualities` list in `personality_assessment.py`
+Edit `PERSONALITY_QUALITIES` in `config.py`
 
-### Modifying Assessment Criteria
-Update the prompt templates in the assessment functions
+### Modifying Assessment Prompts
+Update prompt templates in `ai_core/personality_assessment.py`
 
 ### Changing LLM Model
-Modify the model configuration in `PersonalityAssessmentSystem.__init__()`
+Modify model configuration in `PersonalityAssessmentSystem.__init__()`
 
 ## 🚨 Troubleshooting
 
-### Common Issues
-
-1. **"System not initialized"**
-   - Check your Google API key
-   - Ensure map-t.pdf is in the project directory
-   - Try reinitializing the system
-
-2. **"Assessment failed"**
-   - Check API key validity
-   - Verify internet connection
-   - Review observer notes for clarity
-
-3. **"Rate limit exceeded (429 error)"**
-   - Wait 1-2 minutes between assessments
-   - Check the rate limiting status in the sidebar
-   - Consider upgrading to a paid API plan
-   - Use batch processing for multiple students
-
-4. **"Vector database error"**
-   - Ensure all required files are present
-   - Check file permissions
-   - Try deleting and recreating the database
-
-### Getting Help
-
-- Check the console output for error messages
-- Verify all dependencies are installed
-- Ensure sufficient disk space for vector database
-
-## 📞 Support
-
-For technical support or questions about the system:
-- Check the console logs for detailed error information
-- Verify your Google API key and quota
-- Ensure all required files are present and accessible
-
-## 📊 Data Storage Format
-
-The system now stores assessments in a structured CSV format:
-
-```
-Student_Name | Date_2025-10-06 | Date_2025-10-07 | ...
-John Doe     | Observations: ... | Observations: ... | ...
-             | Assessment: ...   | Assessment: ...   | ...
-Jane Smith   | Observations: ... | Observations: ... | ...
-             | Assessment: ...   | Assessment: ...   | ...
-```
-
-### Key Features:
-- **Student Names**: First column contains all student names
-- **Date Columns**: Each assessment date gets its own column (Date_YYYY-MM-DD)
-- **Combined Data**: Each cell contains both observations and assessment results
-- **Duplicate Handling**: Smart detection and user choice for same-day assessments
-- **Export Options**: Download individual student data or complete dataset
-
-## 🔮 Future Enhancements
-
-- **Real-time Collaboration**: Multiple observers working simultaneously
-- **Advanced Analytics**: Trend analysis across student populations
-- **Mobile App**: Native mobile interface for field observations
-- **Integration**: Direct Google Sheets API integration
-- **Custom Models**: Fine-tuned models for specific rural contexts
-- **Assessment Trends**: Track student progress over time
-- **Data Visualization**: Charts and graphs for assessment patterns
+| Issue | Solution |
+|-------|----------|
+| "System not initialized" | Check API key, ensure `map-t.pdf` exists |
+| "Assessment failed" | Verify API key, check internet connection |
+| "Rate limit exceeded (429)" | Wait 1-2 minutes, check sidebar status |
+| "Vector database error" | Delete `chroma_db` folder, reinitialize |
 
 ## 📄 License
 
@@ -270,4 +218,4 @@ This project is designed for educational and NGO use. Please ensure compliance w
 
 ---
 
-**Built with ❤️ for education development**
+**Built with ❤️ for rural education development**
