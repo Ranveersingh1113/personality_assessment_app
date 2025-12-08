@@ -7,10 +7,13 @@ A multi-agent RAG + LLM pipeline designed to assess personality traits of rural 
 - **Multi-Agent RAG Pipeline**: Combines vector database search with LLM analysis
 - **20 Personality Qualities**: Comprehensive assessment framework
 - **Individual & Batch Assessment**: Process single students or multiple students at once
-- **Streamlit Interface**: Clean, simple web interface
+- **Persistent Data Storage**: Structured CSV storage with student names and date-based columns
+- **Duplicate Assessment Handling**: Smart detection and user choice for same-day assessments
+- **Streamlit Interface**: Clean, simple web interface with 5 main tabs
 - **PDF Integration**: Uses map-t.pdf for quality definitions
 - **Reference Sheet Support**: Uses actual NGO observation data from CSV
-- **Export Capabilities**: Download results in JSON format
+- **Export Capabilities**: Download results in JSON and CSV formats
+- **Assessment History**: View and manage all stored assessments over time
 
 ## 🎯 The 20 Personality Qualities
 
@@ -58,17 +61,12 @@ A multi-agent RAG + LLM pipeline designed to assess personality traits of rural 
 
 ### Running the Application
 
-#### Option 1: Using the startup script
-```bash
-python run_app.py
-```
-
-#### Option 2: Using the batch file (Windows)
+#### Option 1: Using the batch file (Windows)
 Double-click `run_app.bat`
 
-#### Option 3: Manual command
+#### Option 2: Manual command
 ```bash
-streamlit run streamlit_app.py
+streamlit run frontend/streamlit_app.py
 ```
 
 The application will open at `http://localhost:8501`
@@ -76,7 +74,7 @@ The application will open at `http://localhost:8501`
 ## 📱 Using the Application
 
 ### 1. System Setup
-- Enter your OpenAI API key in the sidebar
+- Enter your Google API key in the sidebar
 - Click "Initialize System" to set up the vector database
 - Wait for the system to load reference data
 
@@ -85,14 +83,25 @@ The application will open at `http://localhost:8501`
 - Enter student name and observer notes
 - Click "Assess Personality" to get results
 - View detailed breakdown by quality level
+- **Automatic Storage**: Results are automatically saved to the storage system
+- **Duplicate Handling**: If student already has assessment on same date, choose to replace, append, or cancel
 
 ### 3. Batch Assessment
 - Go to the "Batch Assessment" tab
 - Upload a CSV file with columns: Name, Observations
 - Or use manual entry for multiple students
 - Process all students at once
+- Review and approve results before finalizing
+- **Auto-Storage**: Approved assessments are stored in the main system
 
-### 4. Export Template
+### 4. Stored Assessments (NEW!)
+- Go to the "Stored Assessments" tab
+- View summary statistics (total students, dates, assessments)
+- Select individual students to view their assessment history
+- Export all data to CSV format
+- View raw data table for detailed analysis
+
+### 5. Export Template
 - Download the CSV template for reference sheet
 - Fill in your observations for each quality level
 - Import to Google Sheets for team collaboration
@@ -110,16 +119,24 @@ The system provides assessments in four categories:
 
 ```
 service learning/
-├── streamlit_app.py          # Main Streamlit application
-├── personality_assessment.py # Core assessment engine
-├── csv_reference_processor.py # CSV reference data processor
+├── frontend/
+│   └── streamlit_app.py     # Main Streamlit application
+├── ai_core/
+│   ├── personality_assessment.py      # Core assessment engine
+│   ├── csv_reference_processor.py    # CSV reference data processor
+│   └── assessment_storage_manager.py # NEW: Data storage management
+├── backend/
+│   └── rate_limiter.py      # Rate limiting functionality
+├── assessments/             # Generated assessment files
+│   ├── *.json              # Individual assessment results
+│   ├── *.csv               # Batch assessment results
+│   └── student_assessments.csv # NEW: Main storage file
 ├── map-t.pdf                # Quality definitions (you provide)
 ├── Obseervations check list for feeding.1.xlsx - observation check list 1.csv # NGO reference data
 ├── requirements.txt          # Python dependencies
 ├── run_app.py               # Startup script
 ├── run_app.bat              # Windows startup script
-├── README.md                # This file
-└── assessments/             # Generated assessment files
+└── README.md                # This file
 ```
 
 ## 🔧 Technical Details
@@ -136,7 +153,10 @@ service learning/
 2. Vector database searches for relevant quality definitions
 3. LLM analyzes observations against reference data
 4. System outputs structured assessment with reasoning
-5. Results are saved and can be exported
+5. **NEW**: Duplicate check for same-day assessments
+6. **NEW**: User choice for handling duplicates (replace/append/cancel)
+7. **NEW**: Results are stored in structured CSV format
+8. Results can be exported and viewed in the Stored Assessments tab
 
 ## 📈 Performance
 
@@ -215,6 +235,25 @@ For technical support or questions about the system:
 - Verify your Google API key and quota
 - Ensure all required files are present and accessible
 
+## 📊 Data Storage Format
+
+The system now stores assessments in a structured CSV format:
+
+```
+Student_Name | Date_2025-10-06 | Date_2025-10-07 | ...
+John Doe     | Observations: ... | Observations: ... | ...
+             | Assessment: ...   | Assessment: ...   | ...
+Jane Smith   | Observations: ... | Observations: ... | ...
+             | Assessment: ...   | Assessment: ...   | ...
+```
+
+### Key Features:
+- **Student Names**: First column contains all student names
+- **Date Columns**: Each assessment date gets its own column (Date_YYYY-MM-DD)
+- **Combined Data**: Each cell contains both observations and assessment results
+- **Duplicate Handling**: Smart detection and user choice for same-day assessments
+- **Export Options**: Download individual student data or complete dataset
+
 ## 🔮 Future Enhancements
 
 - **Real-time Collaboration**: Multiple observers working simultaneously
@@ -222,6 +261,8 @@ For technical support or questions about the system:
 - **Mobile App**: Native mobile interface for field observations
 - **Integration**: Direct Google Sheets API integration
 - **Custom Models**: Fine-tuned models for specific rural contexts
+- **Assessment Trends**: Track student progress over time
+- **Data Visualization**: Charts and graphs for assessment patterns
 
 ## 📄 License
 

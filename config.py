@@ -4,18 +4,19 @@ Modify these settings to customize the system behavior
 """
 
 # Gemini Configuration
-# Use a supported Gemini model identifier (seen in your key's list)
-GEMINI_MODEL = "gemini-2.5-flash"
+# Using gemini-flash-latest which auto-selects the best available Flash model
+# Your API key has Gemini 2.0/2.5 Flash (newer and better than 1.5 Flash)
+GEMINI_MODEL = "gemini-flash-latest"
 GEMINI_TEMPERATURE = 0.1  # Lower = more consistent, Higher = more creative
 
 # Rate Limiting Configuration
 ENABLE_RATE_LIMITING = True
-RATE_LIMIT_DELAY = 1.0  # Reduced delay for paid tier
-MAX_REQUESTS_PER_MINUTE = 60  # Higher limit for paid tier
-MAX_REQUESTS_PER_DAY = 10000  # Updated for paid tier
+RATE_LIMIT_DELAY = 4.0  # Increased delay for Free Tier (15 RPM = 4s/req)
+MAX_REQUESTS_PER_MINUTE = 15  # Strict Free Tier limit
+MAX_REQUESTS_PER_DAY = 1500  # Strict Free Tier limit
 RETRY_ON_RATE_LIMIT = True
 MAX_RETRIES = 3
-RETRY_DELAY = 15  # Reduced retry delay for paid tier
+RETRY_DELAY = 30  # Increased retry delay for safety
 
 # Hugging Face Embeddings Configuration
 EMBEDDING_MODEL = "sentence-transformers/all-MiniLM-L6-v2"  # Fast and effective embeddings
@@ -105,8 +106,8 @@ INSTRUCTIONS:
 Remember: Only assess qualities that are clearly demonstrated in the observations. If a quality is not shown, mark it as "NOT OBSERVED" rather than guessing."""
 
 # Batch Processing Configuration
-BATCH_SIZE = 10  # Process students in batches of this size
-BATCH_DELAY = 1  # Delay between batches in seconds (to avoid rate limits)
+BATCH_SIZE = 5  # Reduced batch size to stay well within rate limits
+BATCH_DELAY = 5  # Increased delay between batches
 
 # Export Configuration
 EXPORT_FORMATS = ["json", "csv", "excel"]
