@@ -520,12 +520,17 @@ INSTRUCTIONS:
         
 IMPORTANT: 
 - The output must be in **MARATHI** language (Devanagari script) ONLY.
-- **NO ENGLISH WORDS**.
-- **ABSTRACT TRAITS ONLY**: Do NOT describe what the student *did*. Do NOT include "because..." or specific examples.
-- BAD: "Drawing skills (drew a good picture)"
-- GOOD: "Excellent Drawing Skills" (उत्कृष्ट चित्रकला कौशल्ये)
-- BAD: "Helped friend (shared tiffin)"
-- GOOD: "Social Helpfulness" (सामाजिक मदत करण्याची वृत्ती)
+- **TONE**: Use **Simple, Daily Use, Conversational Marathi** (सोपी आणि समजण्यास सोपी भाषा). Avoid complex Sanskritized words.
+- **VOCABULARY**: Use simple Marathi words that rural parents can understand. You generally should avoid English, but if a common English word is more widely understood than the pure Marathi word (e.g., 'Exam', 'Test', 'Homework', 'Team'), you MAY use it.
+- **ABSTRACT TRAITS ONLY**: Do NOT describe specific incidents. Describe the **trait**.
+
+EXAMPLES OF STYLE:
+- BAD (Too Formal): "बौद्धिक क्षमता उत्कृष्ट आहे" (Intellectual capacity is excellent)
+- GOOD (Simple): "अभ्यासात खूप हुशार आहे" (Very smart in studies)
+- BAD (Too Formal): "सांघिक कार्यक्षमता" (Organizational functionality)
+- GOOD (Simple): "इतरांसोबत मिळून काम करण्याची सवय" (Habit of working together with others)
+- BAD (Too Formal): "नकारात्मक विचारसरणी" (Negative thought process)
+- GOOD (Simple): "लवकर निराश होतो" (Gets disappointed quickly)
 
 CONTEXT:
 {context}
@@ -541,17 +546,16 @@ TASK: Create a SWOT matrix in Marathi.
 
 INSTRUCTIONS:
 1. Identify the core trait or quality.
-2. Output ONLY that trait in Marathi.
-3. NO explanations, NO evidence, NO "Observation 1 says..."
-4. Output strictly in valid JSON as per:
+2. Output ONLY that trait in **Simple Marathi**.
+3. Output strictly in valid JSON as per:
 {{
-    "summary": "Short Marathi summary...",
+    "summary": "Short, simple Marathi summary...",
     "swot_items": [
-        {{ "category": "STRENGTH", "point": "Marathi Trait Only", "explanation": "" }},
+        {{ "category": "STRENGTH", "point": "Simple Marathi Trait", "explanation": "" }},
         ...
     ]
 }}
-5. The 'category' field in JSON must be one of: "STRENGTH", "WEAKNESS", "OPPORTUNITY", "THREAT".
+4. The 'category' field in JSON must be one of: "STRENGTH", "WEAKNESS", "OPPORTUNITY", "THREAT".
 
 {format_instructions}
 """
