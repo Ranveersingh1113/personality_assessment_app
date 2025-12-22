@@ -635,7 +635,10 @@ def process_batch_assessment(df, school_name, class_name):
         status_text = st.empty()
         os.makedirs("assessments", exist_ok=True)
         
-        # Validate required columns
+        # Normalize column names: strip whitespace and convert to title case
+        df.columns = df.columns.str.strip().str.title()
+        
+        # Validate required columns (now case-insensitive due to normalization)
         if 'Name' not in df.columns:
             st.error("❌ CSV must have a 'Name' column")
             return
