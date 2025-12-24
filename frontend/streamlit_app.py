@@ -127,7 +127,14 @@ def get_saved_assessments_index():
         
         filepath = os.path.join(assessments_dir, filename)
         try:
-            df = pd.read_csv(filepath, nrows=1)  # Just read header + 1 row
+            # Try different encodings
+            try:
+                df = pd.read_csv(filepath, nrows=1, encoding='utf-8')
+            except UnicodeDecodeError:
+                try:
+                    df = pd.read_csv(filepath, nrows=1, encoding='cp1252')
+                except UnicodeDecodeError:
+                    df = pd.read_csv(filepath, nrows=1, encoding='latin-1')
             if 'school' in df.columns and 'class' in df.columns and 'date' in df.columns:
                 school = str(df['school'].iloc[0]) if not df.empty else 'Unknown'
                 class_name = str(df['class'].iloc[0]) if not df.empty else 'Unknown'
@@ -148,7 +155,14 @@ def load_assessment_file(filename):
     """Load a specific assessment CSV file"""
     filepath = f"assessments/{filename}"
     if os.path.exists(filepath):
-        return pd.read_csv(filepath, encoding='utf-8')
+        # Try different encodings
+        try:
+            return pd.read_csv(filepath, encoding='utf-8')
+        except UnicodeDecodeError:
+            try:
+                return pd.read_csv(filepath, encoding='cp1252')
+            except UnicodeDecodeError:
+                return pd.read_csv(filepath, encoding='latin-1')
     return None
 
 # ============ END CSV HELPER FUNCTIONS ============
@@ -301,7 +315,16 @@ def batch_assessment_tab():
     
     if uploaded_file is not None and batch_school and batch_class:
         try:
-            df = pd.read_csv(uploaded_file)
+            # Try different encodings to handle Windows-encoded files
+            try:
+                df = pd.read_csv(uploaded_file, encoding='utf-8')
+            except UnicodeDecodeError:
+                uploaded_file.seek(0)  # Reset file pointer
+                try:
+                    df = pd.read_csv(uploaded_file, encoding='cp1252')
+                except UnicodeDecodeError:
+                    uploaded_file.seek(0)
+                    df = pd.read_csv(uploaded_file, encoding='latin-1')
             st.success(f"✅ Successfully loaded {len(df)} students")
             
             # Display preview
