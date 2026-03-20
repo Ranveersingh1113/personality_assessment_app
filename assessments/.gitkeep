@@ -1,0 +1,2 @@
+# This file ensures the assessments directory exists in git
+# Actual CSV files are ignored by .gitignore for privacy

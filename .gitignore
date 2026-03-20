@@ -116,6 +116,29 @@ Thumbs.db
 *.tmp
 *.temp
 
+# Generated report cards and batches
+report_cards_batch_*/
 *.zip
+
+# Assessment data (keep template, exclude generated data)
+assessments/*.csv
+!assessments/.gitkeep
+
+# Session data
+sessions/
+
+# Test batches
+test_batches/
+
+# Backup files
+*.bak
+*_backup.*
+
+# Generated Excel files (keep template)
 *.xlsx
+!report_card_template.xlsx
+
+# Large CSV files (keep test datasets)
 *.csv
+!test_datasets/*.csv
+!reference_sheet_template.csv

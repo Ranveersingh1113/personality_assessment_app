@@ -3,20 +3,104 @@ Configuration file for the Personality Assessment System
 Modify these settings to customize the system behavior
 """
 
-# Gemini Configuration
-# Using gemini-flash-latest which auto-selects the best available Flash model
-# Your API key has Gemini 2.0/2.5 Flash (newer and better than 1.5 Flash)
-GEMINI_MODEL = "gemini-flash-latest"
+# Gemini Model Configuration
+# Available models with their rate limits and capabilities
+AVAILABLE_MODELS = {
+    "gemini-2.5-flash": {
+        "name": "Gemini 2.5 Flash",
+        "description": "FREE for both input and output in free tier - best price-performance model",
+        "free_tier": {
+            "requests_per_minute": 2,
+            "requests_per_day": 20,
+            "tokens_per_minute": 250000,
+            "pricing": "Free of charge",
+            "note": "Actual limit may vary by account - some accounts show 20 RPD instead of 250 RPD"
+        },
+        "paid_tier": {
+            "requests_per_minute": 1000,
+            "requests_per_day": 10000,
+            "tokens_per_minute": 4000000,
+            "pricing": "$0.30 input, $2.50 output per 1M tokens"
+        },
+        "recommended_for": "Production use, batch processing, agentic applications (officially recommended)"
+    },
+    "gemini-2.5-pro": {
+        "name": "Gemini 2.5 Pro",
+        "description": "FREE advanced thinking model for complex reasoning tasks",
+        "free_tier": {
+            "requests_per_minute": 5,
+            "requests_per_day": 25,
+            "tokens_per_minute": 250000,
+            "pricing": "Free of charge"
+        },
+        "paid_tier": {
+            "requests_per_minute": 150,
+            "requests_per_day": 1000,
+            "tokens_per_minute": 1000000,
+            "pricing": "$1.25-$2.50 input, $10.00-$15.00 output per 1M tokens"
+        },
+        "recommended_for": "Complex analysis, advanced reasoning tasks, thinking capabilities"
+    },
+    "gemini-2.0-flash": {
+        "name": "Gemini 2.0 Flash",
+        "description": "FREE second generation model with 1M context window",
+        "free_tier": {
+            "requests_per_minute": 15,
+            "requests_per_day": 1500,
+            "tokens_per_minute": 250000,
+            "pricing": "Free of charge"
+        },
+        "paid_tier": {
+            "requests_per_minute": 2000,
+            "requests_per_day": "Unlimited*",
+            "tokens_per_minute": 10000000,
+            "pricing": "$0.10 input, $0.40 output per 1M tokens"
+        },
+        "recommended_for": "General use, stable performance, 1M context window"
+    },
+    "gemini-flash-latest": {
+        "name": "Gemini Flash (Latest)",
+        "description": "Auto-selects best available Flash model (Gemini 3 Flash)",
+        "free_tier": {
+            "requests_per_minute": 10,
+            "requests_per_day": 100,
+            "tokens_per_minute": 250000,
+            "pricing": "Free of charge"
+        },
+        "paid_tier": {
+            "requests_per_minute": 300,
+            "requests_per_day": 1500,
+            "tokens_per_minute": 1000000,
+            "pricing": "Variable based on latest model"
+        },
+        "recommended_for": "Automatic optimization, always latest features"
+    }
+}
+
+# Default model selection
+DEFAULT_MODEL = "gemini-2.5-flash"  # Officially recommended for production use
 GEMINI_TEMPERATURE = 0.1  # Lower = more consistent, Higher = more creative
 
-# Rate Limiting Configuration
+# Rate Limiting Configuration - Dynamic based on selected model
+def get_rate_limits(model_key, is_paid_tier=False):
+    """Get rate limiting configuration for a specific model and tier"""
+    model_info = AVAILABLE_MODELS.get(model_key, AVAILABLE_MODELS[DEFAULT_MODEL])
+    tier = "paid_tier" if is_paid_tier else "free_tier"
+    
+    return {
+        "requests_per_minute": model_info[tier]["requests_per_minute"],
+        "requests_per_day": model_info[tier]["requests_per_day"],
+        "tokens_per_minute": model_info[tier]["tokens_per_minute"]
+    }
+
+# Default rate limiting (can be overridden by UI selection)
 ENABLE_RATE_LIMITING = True
-RATE_LIMIT_DELAY = 4.0  # Increased delay for Free Tier (15 RPM = 4s/req)
-MAX_REQUESTS_PER_MINUTE = 15  # Strict Free Tier limit
-MAX_REQUESTS_PER_DAY = 1500  # Strict Free Tier limit
+RATE_LIMIT_DELAY = 30.0  # 30 seconds delay for 2 RPM (20 RPD / 2 RPM = safe spacing)
+MAX_REQUESTS_PER_MINUTE = 2  # Conservative for Gemini 2.5 Flash actual limit
+MAX_REQUESTS_PER_DAY = 20  # Actual observed limit for Gemini 2.5 Flash free tier
 RETRY_ON_RATE_LIMIT = True
 MAX_RETRIES = 3
-RETRY_DELAY = 30  # Increased retry delay for safety
+RETRY_DELAY = 10
 
 # Hugging Face Embeddings Configuration
 EMBEDDING_MODEL = "sentence-transformers/all-MiniLM-L6-v2"  # Fast and effective embeddings
@@ -70,7 +154,7 @@ GOOGLE_SHEETS_RANGE = "Sheet1!A:D"  # Adjust based on actual sheet structure
 # Streamlit Configuration
 STREAMLIT_PORT = 8501
 STREAMLIT_HOST = "localhost"
-STREAMLIT_TITLE = "🎓 Personality Assessment System for Rural Students"
+STREAMLIT_TITLE = "🎓 Personality Assessment System for Students"
 
 # Assessment Prompt Templates
 ASSESSMENT_PROMPT_TEMPLATE = """You are an expert personality assessor for rural students. Your task is to evaluate a student's personality traits based on observer notes.
@@ -105,9 +189,9 @@ INSTRUCTIONS:
 
 Remember: Only assess qualities that are clearly demonstrated in the observations. If a quality is not shown, mark it as "NOT OBSERVED" rather than guessing."""
 
-# Batch Processing Configuration
-BATCH_SIZE = 5  # Reduced batch size to stay well within rate limits
-BATCH_DELAY = 5  # Increased delay between batches
+# Batch Processing Configuration - Updated for actual Gemini 2.5 Flash limits
+BATCH_SIZE = 3  # Smaller batches to respect 10 RPM limit
+BATCH_DELAY = 20  # 20 seconds between batches to stay well within limits
 
 # Export Configuration
 EXPORT_FORMATS = ["json", "csv", "excel"]

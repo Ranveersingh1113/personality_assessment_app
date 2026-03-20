@@ -8,10 +8,51 @@ class RateLimitExceeded(Exception):
     """Exception raised when rate limits are exceeded and cannot be resolved by waiting."""
     pass
 
+def get_current_model_limits():
+    """Get rate limits for the currently selected model and tier"""
+    try:
+        from config import AVAILABLE_MODELS, DEFAULT_MODEL
+        import streamlit as st
+        
+        # Get current selections from session state
+        selected_model_key = getattr(st.session_state, 'selected_model', DEFAULT_MODEL)
+        is_paid_tier = getattr(st.session_state, 'is_paid_tier', False)
+        
+        # Get model-specific limits
+        model_info = AVAILABLE_MODELS.get(selected_model_key, AVAILABLE_MODELS[DEFAULT_MODEL])
+        tier = 'paid_tier' if is_paid_tier else 'free_tier'
+        
+        # Extract limits
+        requests_per_minute = model_info[tier]['requests_per_minute']
+        requests_per_day = model_info[tier]['requests_per_day']
+        
+        # Handle "Unlimited*" case for paid tier
+        if isinstance(requests_per_day, str) and "unlimited" in requests_per_day.lower():
+            requests_per_day = 999999  # Very high limit for unlimited
+        
+        # Handle "Varies" case
+        if isinstance(requests_per_minute, str) and "varies" in requests_per_minute.lower():
+            requests_per_minute = 15  # Conservative default
+        
+        return {
+            'requests_per_minute': int(requests_per_minute),
+            'requests_per_day': int(requests_per_day),
+            'model_name': model_info['name'],
+            'tier': 'Paid' if is_paid_tier else 'Free'
+        }
+    except (ImportError, KeyError, AttributeError, ValueError, TypeError):
+        # Fallback to conservative defaults if config unavailable
+        return {
+            'requests_per_minute': 10,
+            'requests_per_day': 50,
+            'model_name': 'Default',
+            'tier': 'Free'
+        }
+
 class RateLimiter:
     """Rate limiter for API calls to prevent quota exceeded errors"""
     
-    def __init__(self, max_requests_per_minute=15, max_requests_per_day=1000, delay_between_calls=2.0):
+    def __init__(self, max_requests_per_minute=10, max_requests_per_day=250, delay_between_calls=2.0):
         self.max_requests_per_minute = max_requests_per_minute
         self.max_requests_per_day = max_requests_per_day
         self.delay_between_calls = delay_between_calls
@@ -28,6 +69,16 @@ class RateLimiter:
         logging.basicConfig(level=logging.INFO)
         self.logger = logging.getLogger(__name__)
     
+    def _update_limits_if_needed(self):
+        """Update rate limits based on current model selection"""
+        try:
+            current_limits = get_current_model_limits()
+            self.max_requests_per_minute = current_limits['requests_per_minute']
+            self.max_requests_per_day = current_limits['requests_per_day']
+        except (KeyError, AttributeError, TypeError):
+            # Keep existing limits if update fails
+            pass
+    
     def _cleanup_old_requests(self):
         """Remove expired requests from tracking"""
         now = datetime.now()
@@ -43,6 +94,9 @@ class RateLimiter:
     def wait_if_needed(self, max_retries: int = 10):
         """Wait if rate limits would be exceeded. Uses iteration instead of recursion."""
         with self.lock:
+            # Update limits based on current model selection
+            self._update_limits_if_needed()
+            
             for attempt in range(max_retries):
                 self._cleanup_old_requests()
                 now = datetime.now()
@@ -87,7 +141,10 @@ class RateLimiter:
     def get_status(self):
         """Get current rate limiting status"""
         with self.lock:
+            # Update limits based on current model selection
+            self._update_limits_if_needed()
             self._cleanup_old_requests()
+            
             return {
                 'minute_requests': len(self.minute_requests),
                 'daily_requests': len(self.daily_requests),

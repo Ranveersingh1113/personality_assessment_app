@@ -3,11 +3,11 @@ import json
 import time
 from typing import List, Dict, Any
 from dotenv import load_dotenv
-import PyPDF2
+import pypdf as PyPDF2  # Updated from deprecated PyPDF2
 import chromadb
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_google_genai import ChatGoogleGenerativeAI
-from langchain_community.embeddings import HuggingFaceEmbeddings
+from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_core.documents import Document
 from langchain_community.vectorstores import Chroma
 from langchain_core.prompts import ChatPromptTemplate
@@ -40,7 +40,7 @@ class SWOTAnalysisResult(BaseModel):
     summary: str = Field(description="Overall strategic summary")
 
 class PersonalityAssessmentSystem:
-    def __init__(self):
+    def __init__(self, model_name=None):
         """Initialize the Personality Assessment System"""
         try:
             from config import PERSONALITY_QUALITIES
@@ -55,25 +55,43 @@ class PersonalityAssessmentSystem:
                 "Sensitivity", "Self sufficiency", "Social warmth", "Tension"
             ]
         
+        # Get temperature from config
         try:
-            from config import GEMINI_MODEL, GEMINI_TEMPERATURE
-            model_name = GEMINI_MODEL
+            from config import GEMINI_TEMPERATURE, DEFAULT_MODEL
             temperature = GEMINI_TEMPERATURE
+            default_model = DEFAULT_MODEL
         except ImportError:
-            model_name = "gemini-flash-latest"
             temperature = 0.1
+            default_model = "gemini-2.5-flash"
         
-        # Initialize Gemini LLM - using only Flash models (fast and efficient)
+        # Use provided model_name or fall back to config default
+        if model_name is None:
+            model_name = default_model
+        
+        # Validate model name and provide fallback
+        valid_models = [
+            "gemini-2.5-flash", 
+            "gemini-2.5-pro", 
+            "gemini-2.0-flash", 
+            "gemini-flash-latest"
+        ]
+        
+        if model_name not in valid_models:
+            print(f"Warning: Model '{model_name}' may not be available. Using fallback 'gemini-2.5-flash'")
+            model_name = "gemini-2.5-flash"
+        
+        # Initialize Gemini LLM with selected model
         api_key = os.getenv("GOOGLE_API_KEY")
         if not api_key or not api_key.strip():
             raise ValueError(
                 "GOOGLE_API_KEY is not set or empty. "
                 "Please ensure your .env file contains a valid API key."
             )
-        # Fixed to use only Flash model family as requested
-        # Using gemini-flash-latest which auto-selects the best available Flash model
-        # (Gemini 2.0/2.5 Flash on this API key - newer and better than 1.5 Flash)
-        self.model_name = "gemini-flash-latest"
+        
+        # Store the selected model name
+        self.model_name = model_name
+        
+        # Initialize LLM with the selected model
         self.llm = ChatGoogleGenerativeAI(
             model=self.model_name,
             temperature=temperature,
@@ -315,10 +333,15 @@ Remember: Only assess qualities that are clearly demonstrated in the observation
             except Exception as e:
                 error_str = str(e)
                 
-                # Check if it's a rate limit error
-                if "429" in error_str and ("quota" in error_str.lower() or "rate" in error_str.lower()) and RETRY_ON_RATE_LIMIT:
-                    if attempt < MAX_RETRIES:
-                        print(f"Rate limit hit (attempt {attempt + 1}/{MAX_RETRIES + 1}). Waiting {RETRY_DELAY} seconds...")
+                # Check if it's a rate limit error or service unavailable
+                if ("429" in error_str and ("quota" in error_str.lower() or "rate" in error_str.lower())) or \
+                   ("503" in error_str and ("unavailable" in error_str.lower() or "overloaded" in error_str.lower())):
+                    if RETRY_ON_RATE_LIMIT and attempt < MAX_RETRIES:
+                        if "503" in error_str:
+                            print(f"Model overloaded (attempt {attempt + 1}/{MAX_RETRIES + 1}). Waiting {RETRY_DELAY} seconds...")
+                            print("💡 Tip: Try switching to Gemini 2.0 Flash for better availability")
+                        else:
+                            print(f"Rate limit hit (attempt {attempt + 1}/{MAX_RETRIES + 1}). Waiting {RETRY_DELAY} seconds...")
                         print(f"Error details: {error_str}")
                         time.sleep(RETRY_DELAY)
                         continue
@@ -328,7 +351,7 @@ Remember: Only assess qualities that are clearly demonstrated in the observation
                             "observations": observations
                         }
                 
-                # Note: Model fallback removed - using only gemini-1.5-flash as requested
+                # Note: Model fallback removed - using only gemini-2.5-flash as requested
                 # For other errors, try fallback
                 try:
                     fallback_result = self._fallback_assessment(observations, retriever)
@@ -486,9 +509,14 @@ INSTRUCTIONS:
                 return result.model_dump()
             except Exception as e:
                 error_str = str(e)
-                if "429" in error_str and ("quota" in error_str.lower() or "rate" in error_str.lower()) and RETRY_ON_RATE_LIMIT:
-                    if attempt < MAX_RETRIES:
-                        print(f"Rate limit hit (attempt {attempt + 1}/{MAX_RETRIES + 1}). Waiting {RETRY_DELAY} seconds...")
+                if ("429" in error_str and ("quota" in error_str.lower() or "rate" in error_str.lower())) or \
+                   ("503" in error_str and ("unavailable" in error_str.lower() or "overloaded" in error_str.lower())):
+                    if RETRY_ON_RATE_LIMIT and attempt < MAX_RETRIES:
+                        if "503" in error_str:
+                            print(f"Model overloaded (attempt {attempt + 1}/{MAX_RETRIES + 1}). Waiting {RETRY_DELAY} seconds...")
+                            print("💡 Tip: Try switching to Gemini 2.0 Flash for better availability")
+                        else:
+                            print(f"Rate limit hit (attempt {attempt + 1}/{MAX_RETRIES + 1}). Waiting {RETRY_DELAY} seconds...")
                         time.sleep(RETRY_DELAY)
                         continue
                     else:
