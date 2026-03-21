@@ -93,8 +93,8 @@ echo.
 echo ====================================================
 echo.
 
-REM Run the app
-python -m streamlit run frontend/streamlit_app.py --server.port 8501 --server.headless true
+REM Run the app (browser will open automatically)
+python -m streamlit run frontend/streamlit_app.py --server.port 8501
 
 REM If app exits, show message
 echo.
