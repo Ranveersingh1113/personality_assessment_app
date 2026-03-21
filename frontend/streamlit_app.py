@@ -873,17 +873,10 @@ def batch_assessment_tab():
                             elif batch_size > daily_limit * 0.75:  # 75% of quota
                                 st.warning(f"⚠️ **HIGH QUOTA USAGE**: This will use {batch_size} of your {daily_limit} daily requests!")
                                 st.warning("⚠️ **Warning**: This will use most of your daily quota")
-                                st.info("💡 **Consider**: Splitting into smaller batches or saving some quota for individual assessments")
                                 
                                 confirm_quota = st.checkbox(f"I understand this will use {batch_size}/{daily_limit} of my daily quota", key="confirm_csv_quota")
                                 if not confirm_quota:
                                     st.stop()
-                                    
-                            elif batch_size > daily_limit * 0.25:  # 25% of quota
-                                quota_percent = (batch_size / daily_limit) * 100
-                                st.info(f"📊 **Quota Usage**: This will use {batch_size} of your {daily_limit} daily requests ({quota_percent:.0f}% of quota)")
-                                st.info(f"💡 **{model_info['name']} Limit**: {daily_limit} requests per day total")
-                                st.info(f"💡 **Remaining after this batch**: {daily_limit - batch_size} requests")
                     except (ImportError, KeyError, AttributeError) as e:
                         # Fallback to conservative warnings if config unavailable
                         st.warning(f"⚠️ Could not load quota information: {str(e)}")
