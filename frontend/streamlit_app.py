@@ -835,21 +835,8 @@ def batch_assessment_tab():
                 # Check if using local model first - no quota limits for local models
                 is_local_model = st.session_state.get('is_local_model', False)
                 
-                if not is_local_model:
-                    # API model - check quota limits
-                    try:
-                        from config import AVAILABLE_MODELS, DEFAULT_MODEL
-                        selected_model_key = st.session_state.get('selected_model', DEFAULT_MODEL)
-                        is_paid_tier = st.session_state.get('is_paid_tier', False)
-                        
-                        # Get model-specific limits
-                        model_info = AVAILABLE_MODELS.get(selected_model_key, AVAILABLE_MODELS[DEFAULT_MODEL])
-                        tier = 'paid_tier' if is_paid_tier else 'free_tier'
-                        daily_limit = model_info[tier]['requests_per_day']
-                        
-                    # Quota warnings removed - let users process batches freely
-                    # API will handle rate limiting naturally
-                    pass
+                # Quota warnings removed - let users process batches freely
+                # API will handle rate limiting naturally
                 
                 st.dataframe(validation_result.processed_data.head(), width='stretch')
                 
