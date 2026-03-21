@@ -847,44 +847,9 @@ def batch_assessment_tab():
                         tier = 'paid_tier' if is_paid_tier else 'free_tier'
                         daily_limit = model_info[tier]['requests_per_day']
                         
-                        # Handle "Unlimited*" case
-                        if isinstance(daily_limit, str) and "unlimited" in daily_limit.lower():
-                            st.success(f"✅ **UNLIMITED QUOTA**: Processing {batch_size} students with paid tier unlimited requests")
-                            st.info("🎯 No daily limits - you can process large batches without concern")
-                        else:
-                            # Use actual numeric limit
-                            daily_limit = int(daily_limit)
-                            
-                            if batch_size > daily_limit:
-                                st.error(f"🚨 **EXCEEDS DAILY QUOTA**: {model_info['name']} allows {daily_limit} requests per day!")
-                                st.error(f"❌ Cannot process {batch_size} students - you'll hit quota limit after {daily_limit} students")
-                                st.warning("⚠️ **Solutions:**")
-                                st.warning(f"• Split this file into smaller files (≤{daily_limit} students each)")
-                                st.warning("• Process across multiple days")
-                                st.warning("• Upgrade to paid Google API plan for higher limits")
-                                
-                                # Offer to split the file
-                                st.info("💡 **File Splitting Suggestion:**")
-                                num_files = (batch_size + daily_limit - 1) // daily_limit  # Round up division
-                                st.info(f"• Split into {num_files} files of ~{daily_limit} students each")
-                                st.info(f"• Process 1 file per day = {num_files} days total")
-                                st.stop()  # Prevent processing
-                                
-                            elif batch_size > daily_limit * 0.75:  # 75% of quota
-                                st.warning(f"⚠️ **HIGH QUOTA USAGE**: This will use {batch_size} of your {daily_limit} daily requests!")
-                                st.warning("⚠️ **Warning**: This will use most of your daily quota")
-                                
-                                confirm_quota = st.checkbox(f"I understand this will use {batch_size}/{daily_limit} of my daily quota", key="confirm_csv_quota")
-                                if not confirm_quota:
-                                    st.stop()
-                    except (ImportError, KeyError, AttributeError) as e:
-                        # Fallback to conservative warnings if config unavailable
-                        st.warning(f"⚠️ Could not load quota information: {str(e)}")
-                        if batch_size > 50:
-                            st.warning(f"⚠️ **Large Batch**: Processing {batch_size} students - ensure you have sufficient quota")
-                            confirm_quota = st.checkbox("I understand this is a large batch", key="confirm_csv_quota_fallback")
-                            if not confirm_quota:
-                                st.stop()
+                    # Quota warnings removed - let users process batches freely
+                    # API will handle rate limiting naturally
+                    pass
                 
                 st.dataframe(validation_result.processed_data.head(), width='stretch')
                 
