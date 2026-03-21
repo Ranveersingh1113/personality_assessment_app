@@ -741,7 +741,12 @@ def batch_assessment_tab():
         import pandas as pd
         try:
             df_preview = pd.read_csv(uploaded_file, nrows=1)
-            has_new_format = all(col in df_preview.columns for col in ['Name', 'School', 'Class', 'Session', 'Observations'])
+            
+            # Strip whitespace from column names and check
+            df_preview.columns = df_preview.columns.str.strip()
+            
+            required_columns = ['Name', 'School', 'Class', 'Session', 'Observations']
+            has_new_format = all(col in df_preview.columns for col in required_columns)
             
             if has_new_format:
                 st.success("✅ **CSV format validated**: Name, School, Class, Session, Observations")
@@ -750,7 +755,8 @@ def batch_assessment_tab():
                 batch_class = "From_CSV"
             else:
                 st.error("❌ **Invalid CSV format**")
-                st.error("Required columns: Name, School, Class, Session, Observations")
+                st.error(f"Required columns: Name, School, Class, Session, Observations")
+                st.error(f"Found columns: {', '.join(df_preview.columns.tolist())}")
                 st.stop()
                 
         except Exception as e:

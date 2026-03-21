@@ -221,7 +221,8 @@ class EnhancedCSVProcessor:
         raise ValueError("Could not read CSV with any supported encoding")
     
     def _normalize_columns(self, df: pd.DataFrame) -> pd.DataFrame:
-        """Normalize column names to handle case variations"""
+        """Normalize column names to handle case variations and whitespace"""
+        # Strip whitespace and convert to title case for consistency
         df.columns = df.columns.str.strip().str.title()
         return df
     
